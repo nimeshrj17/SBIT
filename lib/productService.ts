@@ -56,11 +56,18 @@ let mockProducts: Product[] = [
 
 const hasRealDb = () => db && typeof db.type !== 'undefined' || db.app;
 
+const withTimeout = <T>(promise: Promise<T>, ms: number = 5000): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Firebase connection timeout. Is the database created?")), ms))
+  ]);
+};
+
 export const getProducts = async (): Promise<Product[]> => {
   if (!hasRealDb()) return [...mockProducts];
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await withTimeout(getDocs(q));
     return querySnapshot.docs.map(d => ({ id: d.id, ...d.data() } as Product));
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -119,7 +126,7 @@ export const getCategories = async (): Promise<Category[]> => {
   if (!hasRealDb()) return [...mockCategories];
   try {
     const q = query(collection(db, CATEGORIES_COLLECTION), orderBy("createdAt", "asc"));
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await withTimeout(getDocs(q));
     return querySnapshot.docs.map(d => ({ id: d.id, ...d.data() } as Category));
   } catch (error) {
     console.error("Error fetching categories:", error);

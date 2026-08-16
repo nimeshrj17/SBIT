@@ -19,13 +19,8 @@ export default function Navbar() {
         </div>
         <div className={styles.links}>
           <Link href="/" className={`${styles.link} ${styles.active}`}>Home</Link>
-          <Link href="#collections" className={styles.link}>Collections</Link>
-          <Link href="/about" className={styles.link}>About</Link>
-          <Link href="/instagram" className={styles.link}>Instagram</Link>
-          <Link href="/contact" className={styles.link}>Contact</Link>
-        </div>
-        <div className={styles.actions}>
-          <Link href="/quote" className={styles.btnOutline}>Get a Quote</Link>
+          <a href="#collections" className={styles.link}>Collections</a>
+          <a href="#contact" className={styles.link}>Contact</a>
         </div>
       </div>
     </nav>

@@ -10,8 +10,8 @@
 
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  position: relative;
   padding: 1rem 2rem;
   background-color: rgba(60, 20, 20, 0.4);
   backdrop-filter: blur(10px);
@@ -80,6 +80,9 @@
   display: flex;
   gap: 2.5rem;
   align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .link {

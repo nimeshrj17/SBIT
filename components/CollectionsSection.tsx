@@ -7,17 +7,63 @@ import ProductCard from "./ProductCard";
 import AccordionGallery from "./AccordionGallery";
 import { Filter, Search, ChevronDown, ChevronRight, Flower } from "lucide-react";
 import Link from "next/link";
-import { getProducts, getCategories, Product, Category } from "@/lib/productService";
+import { getProducts, getCategories, getSetting, Product, Category } from "@/lib/productService";
 
-export default function CollectionsSection() {
+interface CollectionsSectionProps {
+  onAddToCart?: (product: Product) => void;
+}
+
+export default function CollectionsSection({ onAddToCart }: CollectionsSectionProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPrice, setSelectedPrice] = useState<string>("All Prices");
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  
+  const [priceFilterInterval, setPriceFilterInterval] = useState(4000);
+  const [priceBuckets, setPriceBuckets] = useState<string[]>(["All Prices"]);
+  
+  const filteredProducts = products.filter(p => {
+    if (selectedCategory !== "all" && p.category !== selectedCategory) return false;
+    if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    
+    if (selectedPrice !== "All Prices") {
+      const parts = selectedPrice.split(" - ");
+      if (parts.length === 2) {
+        const min = parseInt(parts[0].replace(/\D/g, ''), 10);
+        const max = parseInt(parts[1].replace(/\D/g, ''), 10);
+        if (p.price < min || p.price >= max) return false;
+      }
+    }
+    
+    if (selectedColor && !p.colors.includes(selectedColor)) return false;
+    
+    return true;
+  });
 
   useEffect(() => {
     const fetchLiveData = async () => {
       setLoading(true);
-      const [prods, cats] = await Promise.all([getProducts(), getCategories()]);
+      const [prods, cats, intervalStr] = await Promise.all([getProducts(), getCategories(), getSetting("priceFilterInterval")]);
+      
+      const interval = intervalStr ? parseInt(intervalStr, 10) : 4000;
+      setPriceFilterInterval(interval);
+      
+      let maxPrice = 0;
+      prods.forEach(p => { if (p.price > maxPrice) maxPrice = p.price; });
+      
+      const buckets = ["All Prices"];
+      let current = 0;
+      while (current < maxPrice) {
+        buckets.push(`₹${current.toLocaleString('en-IN')} - ₹${(current + interval).toLocaleString('en-IN')}`);
+        current += interval;
+      }
+      if (maxPrice === 0) buckets.push(`₹0 - ₹${interval.toLocaleString('en-IN')}`);
+      
+      setPriceBuckets(buckets);
       setProducts(prods);
       setCategories([{ id: "all", name: "All Collections", slug: "all" }, ...cats]);
       setLoading(false);
@@ -97,7 +143,12 @@ export default function CollectionsSection() {
               <h4 className={styles.filterHeader}>Categories <span className={styles.minus}>&minus;</span></h4>
               {categories.map((cat, idx) => (
                 <label key={cat.id} className={styles.radioLabel}>
-                  <input type="radio" name="category" defaultChecked={idx === 0} />
+                  <input 
+                    type="radio" 
+                    name="category" 
+                    checked={selectedCategory === cat.slug}
+                    onChange={() => setSelectedCategory(cat.slug)}
+                  />
                   <span className={styles.radioText}>
                     {cat.name} 
                     {cat.slug !== "all" && ` (${products.filter(p => p.category === cat.slug).length})`}
@@ -108,36 +159,28 @@ export default function CollectionsSection() {
             
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Price Range <span className={styles.minus}>&minus;</span></h4>
-              <label className={styles.radioLabel}>
-                <input type="radio" name="price" defaultChecked />
-                <span className={styles.radioText}>All Prices</span>
-              </label>
-              <label className={styles.radioLabel}>
-                <input type="radio" name="price" />
-                <span className={styles.radioText}>Under ₹3,000</span>
-              </label>
-              <label className={styles.radioLabel}>
-                <input type="radio" name="price" />
-                <span className={styles.radioText}>₹3,000 - ₹5,000</span>
-              </label>
-              <label className={styles.radioLabel}>
-                <input type="radio" name="price" />
-                <span className={styles.radioText}>₹5,000 - ₹10,000</span>
-              </label>
-              <label className={styles.radioLabel}>
-                <input type="radio" name="price" />
-                <span className={styles.radioText}>Above ₹10,000</span>
-              </label>
+              {priceBuckets.map((bucket, idx) => (
+                <label key={idx} className={styles.radioLabel}>
+                  <input type="radio" name="price" checked={selectedPrice === bucket} onChange={() => setSelectedPrice(bucket)} />
+                  <span className={styles.radioText}>{bucket}</span>
+                </label>
+              ))}
             </div>
             
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Color <span className={styles.minus}>&minus;</span></h4>
               <div className={styles.colorFilters}>
-                <span className={styles.colorFilter} style={{ backgroundColor: '#5e1b20' }}></span>
-                <span className={styles.colorFilter} style={{ backgroundColor: '#c23a2a' }}></span>
-                <span className={styles.colorFilter} style={{ backgroundColor: '#dfafa3' }}></span>
-                <span className={styles.colorFilter} style={{ backgroundColor: '#3a4a2b' }}></span>
-                <span className={styles.colorFilter} style={{ backgroundColor: '#1a1210' }}></span>
+                {['#5e1b20', '#c23a2a', '#dfafa3', '#3a4a2b', '#1a1210'].map(color => (
+                  <span 
+                    key={color}
+                    className={styles.colorFilter} 
+                    style={{ 
+                      backgroundColor: color, 
+                      border: selectedColor === color ? '2px solid #c9a15a' : '2px solid transparent'
+                    }}
+                    onClick={() => setSelectedColor(selectedColor === color ? null : color)}
+                  />
+                ))}
                 <span className={styles.colorFilterMore}>+</span>
               </div>
             </div>
@@ -157,12 +200,18 @@ export default function CollectionsSection() {
             
             {/* Top Bar */}
             <div className={styles.productsTopBar}>
-              <span className={styles.showingText}>Showing 8 of 120 products</span>
+              <span className={styles.showingText}>Showing {filteredProducts.length} of {products.length} products</span>
               
               <div className={styles.topBarControls}>
                 <div className={styles.searchBox}>
                   <Search size={14} className={styles.searchIcon} />
-                  <input type="text" placeholder="Search products..." className={styles.searchInput} />
+                  <input 
+                    type="text" 
+                    placeholder="Search products..." 
+                    className={styles.searchInput} 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                 </div>
                 
                 <div className={styles.sortBox}>
@@ -178,16 +227,21 @@ export default function CollectionsSection() {
                 <p style={{ color: 'rgba(245, 239, 230, 0.5)', gridColumn: '1 / -1' }}>Loading collections...</p>
               ) : products.length === 0 ? (
                 <p style={{ color: 'rgba(245, 239, 230, 0.5)', gridColumn: '1 / -1' }}>No products found.</p>
+              ) : filteredProducts.length === 0 ? (
+                <p style={{ color: 'rgba(245, 239, 230, 0.5)', gridColumn: '1 / -1' }}>No products match your filters.</p>
               ) : (
-                products.map((product) => (
+                filteredProducts.map((product) => (
                   <ProductCard 
                     key={product.id}
                     image={product.image}
                     title={product.title}
+                    productCode={product.productCode || product.id}
                     price={product.price}
                     isNew={product.isNew}
                     colors={product.colors}
                     extraColorsCount={product.extraColorsCount}
+                    onAddToCart={() => onAddToCart && onAddToCart(product)}
+                    onInquiry={() => window.location.href = '/quote'}
                   />
                 ))
               )}

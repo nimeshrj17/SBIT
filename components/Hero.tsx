@@ -55,7 +55,6 @@ export default function Hero() {
             <Link href="#collections" className={styles.btnPrimary}>
               EXPLORE COLLECTIONS <ArrowRight size={16} />
             </Link>
-            <Link href="/quote" className={styles.btnOutline}>GET A QUOTE</Link>
           </div>
           
           <div className={styles.features}>

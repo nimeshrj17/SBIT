@@ -69,17 +69,16 @@ export default function Footer({ whatsappNumber = "+91 123 456 7890" }: FooterPr
             <div className={styles.linksColumn}>
               <h4 className={styles.columnTitle}>Quick Links</h4>
               <Link href="/">Home</Link>
-              <Link href="#collections">Collections</Link>
-              <Link href="/about">About Us</Link>
-              <Link href="/quote">Custom Quote</Link>
+              <a href="#collections">Collections</a>
+              <a href="#contact">Contact</a>
             </div>
             
             <div className={styles.linksColumn}>
               <h4 className={styles.columnTitle}>Collections</h4>
-              <Link href="#collections">Bridal Lehengas</Link>
-              <Link href="#collections">Sarees</Link>
-              <Link href="#collections">Suits</Link>
-              <Link href="#collections">Fusion Wear</Link>
+              <a href="#collections">Bridal Lehengas</a>
+              <a href="#collections">Sarees</a>
+              <a href="#collections">Suits</a>
+              <a href="#collections">Fusion Wear</a>
             </div>
           </div>
           
@@ -99,7 +98,6 @@ export default function Footer({ whatsappNumber = "+91 123 456 7890" }: FooterPr
           </div>
           
           <div className={styles.socialLinks}>
-            <a href="#" aria-label="Instagram" className={styles.socialIcon}>IG</a>
           </div>
         </div>
       </div>

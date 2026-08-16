@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./ProductCard.module.css";
 import { Heart, ShoppingBag, MessageCircle } from "lucide-react";
+import SpecularButton from "./SpecularButton";
 
 interface ProductCardProps {
   image: string;
@@ -10,6 +11,8 @@ interface ProductCardProps {
   isNew?: boolean;
   colors?: string[];
   extraColorsCount?: number;
+  onAddToCart?: () => void;
+  onInquiry?: () => void;
 }
 
 export default function ProductCard({
@@ -20,6 +23,8 @@ export default function ProductCard({
   isNew = false,
   colors = [],
   extraColorsCount = 0,
+  onAddToCart,
+  onInquiry,
 }: ProductCardProps) {
   const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -37,18 +42,11 @@ export default function ProductCard({
           className={styles.image} 
         />
         {isNew && <div className={styles.badge}>NEW</div>}
-        <button className={styles.wishlistBtn} aria-label="Add to wishlist">
-          <Heart size={16} />
-        </button>
       </div>
       
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
         {productCode && <span className={styles.productCode}>{productCode}</span>}
-        <div className={styles.priceRow}>
-          <span className={styles.price}>{formattedPrice}</span>
-          <span className={styles.gst}>(+12% GST)</span>
-        </div>
         
         {colors.length > 0 && (
           <div className={styles.colorsRow}>
@@ -66,14 +64,50 @@ export default function ProductCard({
         )}
         
         <div className={styles.actions}>
-          <button className={styles.btnAddToCart}>
+          <SpecularButton
+            size="sm"
+            radius={8}
+            tint="#000000"
+            tintOpacity={1}
+            blur={0}
+            textColor="#ffffff"
+            lineColor="#555555"
+            baseColor="#000000"
+            intensity={1.2}
+            shineSize={10}
+            shineFade={40}
+            thickness={1}
+            speed={0.35}
+            followMouse={true}
+            proximity={250}
+            autoAnimate={false}
+            onClick={onAddToCart}
+          >
             <ShoppingBag size={14} />
             Add to Cart
-          </button>
-          <button className={styles.btnInquiry}>
+          </SpecularButton>
+          <SpecularButton
+            size="sm"
+            radius={8}
+            tint="#000000"
+            tintOpacity={1}
+            blur={0}
+            textColor="#ffffff"
+            lineColor="#555555"
+            baseColor="#000000"
+            intensity={1}
+            shineSize={10}
+            shineFade={40}
+            thickness={1}
+            speed={0.35}
+            followMouse={true}
+            proximity={250}
+            autoAnimate={false}
+            onClick={onInquiry}
+          >
             <MessageCircle size={14} />
             Inquiry
-          </button>
+          </SpecularButton>
         </div>
       </div>
     </div>

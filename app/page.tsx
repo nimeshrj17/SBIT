@@ -71,7 +71,7 @@ export default function Home() {
     <div className={styles.page}>
       <Navbar />
       <Hero />
-      <CollectionsSection />
+      <CollectionsSection onAddToCart={handleAddToCart} />
       <Footer whatsappNumber={whatsappNumber} />
 
       {/* Floating Cart Tray */}

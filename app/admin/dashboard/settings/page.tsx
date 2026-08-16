@@ -7,6 +7,7 @@ import { getSetting, setSetting } from "@/lib/productService";
 
 export default function SettingsPage() {
   const [whatsapp, setWhatsapp] = useState("");
+  const [priceFilterInterval, setPriceFilterInterval] = useState("4000");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -14,6 +15,8 @@ export default function SettingsPage() {
     const fetchSettings = async () => {
       const number = await getSetting("whatsappNumber");
       if (number) setWhatsapp(number);
+      const interval = await getSetting("priceFilterInterval");
+      if (interval) setPriceFilterInterval(interval);
     };
     fetchSettings();
   }, []);
@@ -25,6 +28,7 @@ export default function SettingsPage() {
     
     try {
       await setSetting("whatsappNumber", whatsapp);
+      await setSetting("priceFilterInterval", priceFilterInterval);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
@@ -80,6 +84,35 @@ export default function SettingsPage() {
                 required
               />
             </div>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="priceFilterInterval" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Price Filter Interval (₹)
+            </label>
+            <p style={{ color: 'rgba(245, 239, 230, 0.5)', fontSize: '0.8rem', margin: '0 0 0.5rem 0' }}>
+              The gap between price filter categories on the storefront (e.g. 4000 generates 0-4000, 4000-8000, etc.)
+            </p>
+            
+            <input 
+              type="number" 
+              id="priceFilterInterval"
+              value={priceFilterInterval}
+              onChange={(e) => setPriceFilterInterval(e.target.value)}
+              min="1000"
+              step="1000"
+              style={{ 
+                width: '100%', 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                padding: '1rem', 
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: '1rem'
+              }}
+              required
+            />
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
