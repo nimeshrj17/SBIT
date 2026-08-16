@@ -109,7 +109,6 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
             gap={10}
             radius={8}
             orientation="horizontal"
-            springConfig={{ stiffness: 300, damping: 30, mass: 1 }}
           />
           )}
         </div>
