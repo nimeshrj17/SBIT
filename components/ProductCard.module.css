@@ -1,0 +1,178 @@
+.card {
+  background-color: #f7f4ee;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background-color: rgba(20, 5, 10, 0.7);
+  color: #c9a15a;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(201, 161, 90, 0.3);
+}
+
+.wishlistBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a0a0d;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.wishlistBtn:hover {
+  background-color: #ffffff;
+  color: #c9a15a;
+}
+
+.content {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #1a0a0d;
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+}
+
+.productCode {
+  font-size: 0.8rem;
+  color: #666;
+  font-family: monospace;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a0a0d;
+}
+
+.gst {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.colorsRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.colorSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.extraColors {
+  font-size: 0.7rem;
+  color: #666;
+  background-color: #e5e0d8;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.btnAddToCart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #2b1318;
+  color: #f7f4ee;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnAddToCart:hover {
+  background-color: #1a0a0d;
+}
+
+.btnInquiry {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: transparent;
+  color: #1a0a0d;
+  border: 1px solid #d4cdc1;
+  border-radius: 4px;
+  padding: 0.6rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnInquiry:hover {
+  background-color: rgba(0,0,0,0.05);
+}

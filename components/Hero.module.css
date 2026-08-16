@@ -1,0 +1,262 @@
+.heroSection {
+  background-color: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.silkBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.container {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.content {
+  flex: 1;
+  padding: 10rem 2rem 4rem 8%;
+  max-width: 50%;
+  z-index: 10;
+}
+
+.rightColumn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding-right: 5%;
+}
+
+.heroCarouselFrame {
+  position: relative;
+  width: 400px;
+  height: 550px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  background-color: #1a0a0d;
+}
+
+.heroCarouselSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.activeSlide {
+  opacity: 1;
+}
+
+.heroCarouselImage {
+  object-fit: cover;
+}
+
+.heroCarouselCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 3rem 1.5rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15, 4, 7, 0.95), transparent);
+  color: var(--color-text-light);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+}
+
+.overline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.line {
+  height: 1px;
+  width: 40px;
+  background-color: var(--color-accent);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 4.8rem;
+  line-height: 1.1;
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.goldText {
+  color: var(--color-accent);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 300px;
+}
+
+.dividerLine {
+  height: 1px;
+  flex: 1;
+  background-color: rgba(201, 161, 90, 0.3);
+}
+
+.dividerIcon {
+  color: var(--color-accent);
+  font-size: 0.8rem;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(245, 239, 230, 0.8);
+  margin-bottom: 3rem;
+  max-width: 85%;
+}
+
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.btnPrimary {
+  background-color: var(--color-accent);
+  color: #1a1210;
+  padding: 1rem 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+
+.btnOutline {
+  background-color: transparent;
+  color: var(--color-text-light);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 2.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.btnOutline:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-text-light);
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.featureIcon {
+  color: var(--color-accent);
+  stroke-width: 1.5;
+}
+
+.featureText {
+  font-size: 0.85rem;
+  color: rgba(245, 239, 230, 0.9);
+  line-height: 1.4;
+}
+
+.featureDivider {
+  width: 1px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bottomBar {
+  background-color: rgba(30, 5, 10, 0.9);
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(201, 161, 90, 0.2);
+  z-index: 10;
+}
+
+.bottomBarText {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+}
+
+.ornament {
+  color: var(--color-accent);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+  .content {
+    max-width: 100%;
+    padding: 8rem 2rem 4rem 2rem;
+  }
+  .title {
+    font-size: 3.5rem;
+  }
+  .features {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .featureDivider {
+    width: 100%;
+    height: 1px;
+  }
+}

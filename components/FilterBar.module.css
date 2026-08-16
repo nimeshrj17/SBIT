@@ -1,0 +1,55 @@
+.filterContainer {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.filterGroup {
+  margin-bottom: 1.5rem;
+}
+
+.filterGroup h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  color: var(--color-border);
+}
+
+.filterBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  border-radius: 2px;
+  margin-bottom: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.filterBtn:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.filterBtn.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
+}

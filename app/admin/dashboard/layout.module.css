@@ -1,0 +1,104 @@
+.adminContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #1a0a0d;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: rgba(30, 15, 20, 0.8);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 2rem;
+  margin-bottom: 3rem;
+}
+
+.logoCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top left, #fff1d4, #c9a15a);
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoHouse {
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: rgba(245, 239, 230, 0.6);
+}
+
+.logoShri {
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: #c9a15a;
+  line-height: 1;
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  color: rgba(245, 239, 230, 0.7);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.navItem:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #f7f4ee;
+}
+
+.navItem.active {
+  background-color: rgba(201, 161, 90, 0.1);
+  color: #c9a15a;
+  border-left-color: #c9a15a;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(245, 239, 230, 0.7);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.logoutBtn:hover {
+  color: #ff6b6b;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  overflow-y: auto;
+  height: 100vh;
+}
