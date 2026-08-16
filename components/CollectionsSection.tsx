@@ -70,6 +70,9 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
     };
     fetchLiveData();
   }, []);
+
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
   return (
     <section id="collections" className={styles.section}>
       <div className={styles.container}>
@@ -130,12 +133,17 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         {/* Main Layout Grid */}
         <div className={styles.mainLayout}>
           
-          {/* Sidebar */}
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarHeader}>
-              <h3 className={styles.sidebarTitle}><Filter size={16} /> Filters</h3>
-              <button className={styles.resetBtn}>Reset</button>
-            </div>
+          {/* Sidebar Drawer on Mobile / Fixed on Desktop */}
+          <div className={`${styles.sidebarWrapper} ${isMobileFiltersOpen ? styles.sidebarOpen : ''}`}>
+            <div className={styles.sidebarOverlay} onClick={() => setIsMobileFiltersOpen(false)} />
+            <aside className={styles.sidebar}>
+              <div className={styles.sidebarHeader}>
+                <h3 className={styles.sidebarTitle}><Filter size={16} /> Filters</h3>
+                <div className={styles.sidebarHeaderActions}>
+                  <button className={styles.resetBtn}>Reset</button>
+                  <button className={styles.closeFiltersBtn} onClick={() => setIsMobileFiltersOpen(false)}>×</button>
+                </div>
+              </div>
             
             {/* Filter Groups */}
             <div className={styles.filterGroup}>
@@ -192,13 +200,17 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
               <h4 className={styles.filterHeader}>Availability <span className={styles.plus}>+</span></h4>
             </div>
             
-          </aside>
+            </aside>
+          </div>
           
           {/* Product Grid Area */}
           <div className={styles.productsArea}>
             
             {/* Top Bar */}
             <div className={styles.productsTopBar}>
+              <button className={styles.mobileFilterBtn} onClick={() => setIsMobileFiltersOpen(true)}>
+                <Filter size={16} /> Filters
+              </button>
               <span className={styles.showingText}>Showing {filteredProducts.length} of {products.length} products</span>
               
               <div className={styles.topBarControls}>

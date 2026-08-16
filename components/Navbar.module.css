@@ -134,11 +134,67 @@
   border-color: var(--color-accent);
 }
 
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 60;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 1024px) {
   .navbar {
-    flex-direction: column;
+    flex-direction: row;
     gap: 1.5rem;
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+  }
+  
+  .mobileMenuBtn {
+    display: flex;
+  }
+  
+  .links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(30, 5, 10, 0.95);
+    backdrop-filter: blur(15px);
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.5rem;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 40;
+    pointer-events: none;
+  }
+  
+  .links.mobileOpen {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .link {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1.25rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
   }
 }

@@ -353,6 +353,42 @@
   background-color: rgba(201, 161, 90, 0.1);
 }
 
+/* Mobile Filter Button */
+.mobileFilterBtn {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2b1318;
+  color: var(--color-text-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-height: 44px;
+}
+
+.sidebarHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.closeFiltersBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .grid {
@@ -361,11 +397,55 @@
 }
 
 @media (max-width: 992px) {
-  .mainLayout {
-    flex-direction: column;
+  .sidebarWrapper {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    transition: left 0.3s ease;
   }
-  .sidebar {
+  
+  .sidebarWrapper.sidebarOpen {
+    left: 0;
+  }
+  
+  .sidebarOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .sidebarWrapper.sidebarOpen .sidebarOverlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100%;
+    background-color: #1a0a0d;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .mobileFilterBtn {
+    display: flex;
+  }
+  
+  .closeFiltersBtn {
+    display: flex;
   }
 }
 
@@ -374,9 +454,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .productsTopBar {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 1rem;
+  }
+  .mobileFilterBtn {
+    width: 100%;
+    justify-content: center;
   }
   .bottomBanner {
     flex-direction: column;
@@ -388,5 +471,8 @@
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+  .sidebar {
+    width: 85vw;
   }
 }
