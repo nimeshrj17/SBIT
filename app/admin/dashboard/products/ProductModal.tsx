@@ -15,7 +15,6 @@ const emptyProduct: Omit<Product, "id"> = {
   title: "",
   price: 0,
   image: "",
-  category: "", // keeping for backwards compatibility if needed
   categories: [],
   fabric: "",
   isNew: false,

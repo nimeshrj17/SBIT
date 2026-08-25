@@ -45,7 +45,7 @@ export default function AdminDashboard() {
 
   const filteredProducts = products.filter(p => 
     p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+    (p.categories && p.categories.join(", ").toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
                     </div>
                   </td>
                   <td>
-                    <span className={styles.categoryBadge}>{product.category}</span>
+                    <span className={styles.categoryBadge}>{(product.categories || []).join(", ")}</span>
                   </td>
                   <td>
                     <span className={styles.priceText}>
