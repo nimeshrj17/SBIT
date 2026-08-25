@@ -67,24 +67,46 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div 
-        className={styles.carouselTrack} 
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {items.map((item, idx) => (
-          <div key={idx} className={styles.carouselSlide}>
-            <Image 
-              src={item.image} 
-              alt={item.alt} 
-              fill 
-              className={styles.carouselImage}
-              priority={idx === 0}
-            />
-            <div className={styles.carouselCaption}>
-              <h3>{item.label}</h3>
+      <div className={styles.carouselTrack}>
+        {items.map((item, idx) => {
+          let offset = idx - currentIndex;
+          // Handle infinite wrapping for smooth effect
+          if (offset > Math.floor(items.length / 2)) {
+            offset -= items.length;
+          } else if (offset < -Math.floor(items.length / 2)) {
+            offset += items.length;
+          }
+          
+          let className = styles.carouselSlide;
+          let inlineStyle: React.CSSProperties = {
+            zIndex: 10 - Math.abs(offset),
+            transform: `translateX(${offset * 50}%) scale(${1 - Math.abs(offset) * 0.15})`,
+            opacity: Math.abs(offset) >= 3 ? 0 : 1,
+            pointerEvents: offset === 0 ? 'auto' : 'none',
+          };
+
+          return (
+            <div 
+              key={idx} 
+              className={className}
+              style={inlineStyle}
+              onClick={() => {
+                if (offset !== 0) setCurrentIndex(idx);
+              }}
+            >
+              <Image 
+                src={item.image} 
+                alt={item.alt} 
+                fill 
+                className={styles.carouselImage}
+                priority={idx === 0}
+              />
+              <div className={`${styles.carouselCaption} ${offset === 0 ? styles.captionActive : ''}`}>
+                <h3>{item.label}</h3>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {items.length > 1 && (

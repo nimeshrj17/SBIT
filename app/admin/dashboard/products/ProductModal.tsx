@@ -212,20 +212,26 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           </div>
           
           <div className={styles.formGroup}>
-            <label>Colors (Hex Codes)</label>
+            <label>Color Names</label>
             <div className={styles.colorInputRow}>
               <input 
-                type="color" 
-                value={colorInput || "#000000"} 
+                type="text" 
+                value={colorInput || ""} 
                 onChange={(e) => setColorInput(e.target.value)} 
-                style={{ height: '40px', width: '60px', padding: '0', cursor: 'pointer' }}
+                placeholder="e.g. Emerald Green, Rose Gold"
+                style={{ height: '40px', flex: 1, padding: '0 1rem', borderRadius: '4px', border: '1px solid #444', background: '#222', color: '#fff' }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddColor();
+                  }
+                }}
               />
               <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add Color</button>
             </div>
             <div className={styles.colorChips}>
               {formData.colors.map((c, i) => (
                 <div key={i} className={styles.colorChip}>
-                  <span className={styles.colorSwatch} style={{backgroundColor: c}}></span>
                   {c}
                   <button type="button" onClick={() => handleRemoveColor(i)}>&times;</button>
                 </div>

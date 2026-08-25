@@ -59,13 +59,14 @@ export default function ProductCard({
         {productCode && <span className={styles.productCode}>{productCode}</span>}
         
         {colors.length > 0 && (
-          <div className={styles.colorsRow}>
+          <div className={styles.colorsRow} style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
             {colors.map((color, index) => (
               <span 
                 key={index} 
-                className={styles.colorSwatch} 
-                style={{ backgroundColor: color }}
-              />
+                style={{ fontSize: '0.75rem', backgroundColor: '#eee', padding: '2px 6px', borderRadius: '4px', color: '#333' }}
+              >
+                {color}
+              </span>
             ))}
             {extraColorsCount > 0 && (
               <span className={styles.extraColors}>+{extraColorsCount}</span>

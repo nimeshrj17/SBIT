@@ -108,9 +108,11 @@ export default function AdminDashboard() {
                       <div className={styles.productInfo}>
                         <span className={styles.productTitle}>{product.title}</span>
                         {product.productCode && <span className={styles.productCode} style={{ fontSize: '0.8rem', color: '#888' }}>{product.productCode}</span>}
-                        <div className={styles.colorDots}>
+                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
                           {product.colors.map((c, i) => (
-                            <span key={i} className={styles.colorDot} style={{ backgroundColor: c }}></span>
+                            <span key={i} style={{ fontSize: '0.75rem', backgroundColor: '#eee', padding: '2px 6px', borderRadius: '4px', color: '#333' }}>
+                              {c}
+                            </span>
                           ))}
                         </div>
                       </div>
