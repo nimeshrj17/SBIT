@@ -16,6 +16,9 @@
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 20px;
+  padding-left: calc(30% - (var(--ag-gap) / 2));
+  padding-right: calc(30% - (var(--ag-gap) / 2));
+  position: relative;
   scrollbar-width: none; /* Firefox */
   scroll-snap-type: x mandatory;
   scroll-padding: 0 calc(50% - (40% / 2)); /* roughly centers the active item */
@@ -73,6 +76,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: var(--ag-media-size);
   height: 100%;
   filter: grayscale(var(--ag-gray));
@@ -160,6 +164,8 @@
 
 @media (max-width: 768px) {
   .accordion-gallery {
+    padding-left: calc(20% - (var(--ag-gap) / 2));
+    padding-right: calc(20% - (var(--ag-gap) / 2));
     scroll-padding: 0 calc(50% - (60% / 2));
   }
   .ag-panel {
