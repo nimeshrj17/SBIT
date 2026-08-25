@@ -85,18 +85,17 @@ export default function AdminDashboard() {
               <th>Product</th>
               <th>Category</th>
               <th>Price</th>
-              <th>Status</th>
               <th className={styles.actionsCol}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className={styles.emptyState}>Loading products...</td>
+                <td colSpan={4} className={styles.emptyState}>Loading products...</td>
               </tr>
             ) : filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan={5} className={styles.emptyState}>No products found.</td>
+                <td colSpan={4} className={styles.emptyState}>No products found.</td>
               </tr>
             ) : (
               filteredProducts.map((product) => (
@@ -124,13 +123,6 @@ export default function AdminDashboard() {
                     <span className={styles.priceText}>
                       ₹{product.price.toLocaleString('en-IN')}
                     </span>
-                  </td>
-                  <td>
-                    {product.isNew ? (
-                      <span className={styles.newBadge}>NEW</span>
-                    ) : (
-                      <span className={styles.standardBadge}>STANDARD</span>
-                    )}
                   </td>
                   <td className={styles.actionsCol}>
                     <button onClick={() => handleEdit(product)} className={styles.actionBtn} aria-label="Edit">
