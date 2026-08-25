@@ -165,9 +165,6 @@ const AccordionGallery = ({
             <span className="ag-panel__frame">
               <span
                 className="ag-panel__media"
-                ref={(el: HTMLElement | null) => {
-                  mediaRefs.current[i] = el;
-                }}
               >
                 <Image 
                   src={item.image} 
@@ -184,15 +181,9 @@ const AccordionGallery = ({
               <span className="ag-panel__label" aria-hidden="true">
                 <span
                   className="ag-panel__bar"
-                  ref={(el: HTMLElement | null) => {
-                    barRefs.current[i] = el;
-                  }}
                 />
                 <span
                   className="ag-panel__text"
-                  ref={(el: HTMLElement | null) => {
-                    textRefs.current[i] = el;
-                  }}
                 >
                   {item.label}
                 </span>
