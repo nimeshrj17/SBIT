@@ -1,0 +1,225 @@
+.dashboard {
+  color: #f7f4ee;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+  color: #c9a15a;
+}
+
+.subtitle {
+  color: rgba(245, 239, 230, 0.6);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #c9a15a;
+  color: #1a0a0d;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addBtn:hover {
+  background-color: #f7f4ee;
+  transform: translateY(-2px);
+}
+
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(30, 15, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  width: 300px;
+}
+
+.searchIcon {
+  color: rgba(255, 255, 255, 0.4);
+  margin-right: 0.5rem;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  color: #f7f4ee;
+  outline: none;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.resultsCount {
+  color: rgba(245, 239, 230, 0.6);
+  font-size: 0.9rem;
+}
+
+.tableContainer {
+  background-color: rgba(30, 15, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0 0 8px 8px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(245, 239, 230, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem !important;
+  color: rgba(245, 239, 230, 0.5);
+}
+
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.imageThumb {
+  width: 48px;
+  height: 64px;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.productTitle {
+  font-weight: 500;
+  color: #f7f4ee;
+}
+
+.colorDots {
+  display: flex;
+  gap: 4px;
+}
+
+.colorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.categoryBadge {
+  background-color: rgba(201, 161, 90, 0.1);
+  color: #c9a15a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(201, 161, 90, 0.3);
+  text-transform: capitalize;
+}
+
+.priceText {
+  font-weight: 500;
+}
+
+.newBadge {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.standardBadge {
+  color: rgba(245, 239, 230, 0.4);
+  font-size: 0.75rem;
+}
+
+.actionsCol {
+  text-align: right;
+  width: 120px;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: rgba(245, 239, 230, 0.6);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.actionBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f7f4ee;
+}
+
+.deleteBtn:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}

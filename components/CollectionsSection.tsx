@@ -170,7 +170,13 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
               <div className={styles.sidebarHeader}>
                 <h3 className={styles.sidebarTitle}><Filter size={16} /> Filters</h3>
                 <div className={styles.sidebarHeaderActions}>
-                  <button className={styles.resetBtn}>Reset</button>
+                  <button className={styles.resetBtn} onClick={() => {
+                    setSelectedCategory("all");
+                    setSearchQuery("");
+                    setSelectedPrice("All Prices");
+                    setSelectedColor(null);
+                    setSelectedFabric(null);
+                  }}>Reset</button>
                   <button className={styles.closeFiltersBtn} onClick={() => setIsMobileFiltersOpen(false)}>×</button>
                 </div>
               </div>

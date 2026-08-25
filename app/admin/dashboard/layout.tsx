@@ -59,6 +59,13 @@ export default function AdminDashboardLayout({
             <span>Products</span>
           </Link>
           <Link 
+            href="/admin/dashboard/categories" 
+            className={`${styles.navItem} ${pathname.startsWith("/admin/dashboard/categories") ? styles.active : ""}`}
+          >
+            <Package size={20} />
+            <span>Categories</span>
+          </Link>
+          <Link 
             href="/admin/dashboard/inquiries" 
             className={`${styles.navItem} ${pathname.startsWith("/admin/dashboard/inquiries") ? styles.active : ""}`}
           >
