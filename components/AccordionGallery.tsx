@@ -80,29 +80,7 @@ const AccordionGallery = ({
     return () => clearInterval(timer);
   }, [count, active]);
 
-  const handleScroll = () => {
-    if (!rootRef.current) return;
-    const container = rootRef.current;
-    const containerCenter = container.scrollLeft + container.offsetWidth / 2;
-
-    let closestIndex = active;
-    let minDistance = Infinity;
-
-    panelRefs.current.forEach((panel, i) => {
-      if (!panel) return;
-      const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
-      const distance = Math.abs(containerCenter - panelCenter);
-      
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = i;
-      }
-    });
-
-    if (closestIndex !== active) {
-      setActive(closestIndex);
-    }
-  };
+  // handleScroll removed
 
   const handleClick = (i: number, e: MouseEvent) => {
     e.preventDefault();
@@ -141,9 +119,7 @@ const AccordionGallery = ({
       style={rootStyle}
       role="list"
       aria-label="Image accordion gallery"
-      onScroll={handleScroll}
     >
-      <div className="ag-spacer" aria-hidden="true" />
       {items.map((item, i) => {
         const isActive = i === active;
         const Tag = (item.link ? 'a' : 'div') as 'a';
@@ -193,7 +169,6 @@ const AccordionGallery = ({
           </Tag>
         );
       })}
-      <div className="ag-spacer" aria-hidden="true" />
     </div>
   );
 };

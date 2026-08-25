@@ -18,15 +18,9 @@
   padding-bottom: 20px;
   position: relative;
   scrollbar-width: none; /* Firefox */
-  scroll-snap-type: x mandatory;
-  scroll-padding: 0 calc(50% - (40% / 2)); /* roughly centers the active item */
 }
 .accordion-gallery::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
-}
-
-.ag-spacer {
-  flex: 0 0 calc(30% - (var(--ag-gap) / 2));
 }
 
 .accordion-gallery--vertical {
@@ -165,12 +159,6 @@
 }
 
 @media (max-width: 768px) {
-  .accordion-gallery {
-    scroll-padding: 0 calc(50% - (60% / 2));
-  }
-  .ag-spacer {
-    flex: 0 0 calc(20% - (var(--ag-gap) / 2));
-  }
   .ag-panel {
     flex: 0 0 calc(20% - 6px) !important;
   }
