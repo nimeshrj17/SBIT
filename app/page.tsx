@@ -36,12 +36,20 @@ export default function Home() {
   const [selectedPriceBucket, setSelectedPriceBucket] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [whatsappNumber, setWhatsappNumber] = useState("+91 123 456 7890");
+  const [storeEmail, setStoreEmail] = useState("contact@houseofshri.com");
+  const [storeAddress, setStoreAddress] = useState("Surat, Gujarat, India");
   const [cartItems, setCartItems] = useState<any[]>([]);
 
   useEffect(() => {
     import('@/lib/productService').then(({ getSetting }) => {
       getSetting("whatsappNumber").then(num => {
         if (num) setWhatsappNumber(num);
+      });
+      getSetting("storeEmail").then(email => {
+        if (email) setStoreEmail(email);
+      });
+      getSetting("storeAddress").then(addr => {
+        if (addr) setStoreAddress(addr);
       });
     });
   }, []);
@@ -72,7 +80,11 @@ export default function Home() {
       <Navbar />
       <Hero />
       <CollectionsSection onAddToCart={handleAddToCart} />
-      <Footer whatsappNumber={whatsappNumber} />
+      <Footer 
+        whatsappNumber={whatsappNumber} 
+        storeEmail={storeEmail}
+        storeAddress={storeAddress}
+      />
 
       {/* Floating Cart Tray */}
       <CartTray 

@@ -22,9 +22,13 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPrice, setSelectedPrice] = useState<string>("All Prices");
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
   
   const [priceFilterInterval, setPriceFilterInterval] = useState(4000);
   const [priceBuckets, setPriceBuckets] = useState<string[]>(["All Prices"]);
+  const [availableColors, setAvailableColors] = useState<string[]>([]);
+  const [availableFabrics, setAvailableFabrics] = useState<string[]>([]);
+  const [whatsappNumber, setWhatsappNumber] = useState<string>("");
   
   const filteredProducts = products.filter(p => {
     if (selectedCategory !== "all" && p.category !== selectedCategory) return false;
@@ -40,6 +44,8 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
     }
     
     if (selectedColor && !p.colors.includes(selectedColor)) return false;
+    
+    if (selectedFabric && p.fabric !== selectedFabric) return false;
     
     return true;
   });
@@ -63,10 +69,24 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
       }
       if (maxPrice === 0) buckets.push(`₹0 - ₹${interval.toLocaleString('en-IN')}`);
       
+      const uniqueColors = new Set<string>();
+      const uniqueFabrics = new Set<string>();
+      
+      prods.forEach(p => {
+        if (p.colors) p.colors.forEach(c => uniqueColors.add(c));
+        if (p.fabric) uniqueFabrics.add(p.fabric);
+      });
+      
+      setAvailableColors(Array.from(uniqueColors));
+      setAvailableFabrics(Array.from(uniqueFabrics));
+      
       setPriceBuckets(buckets);
       setProducts(prods);
       setCategories([{ id: "all", name: "All Collections", slug: "all" }, ...cats]);
       setLoading(false);
+      
+      const num = await getSetting("whatsappNumber");
+      if (num) setWhatsappNumber(num);
     };
     fetchLiveData();
   }, []);
@@ -119,8 +139,11 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         {/* Category Navigation */}
         <div className={styles.categoryNav}>
           {categories.map((cat, index) => (
-            <div key={cat.id} className={styles.navItemWrapper}>
-              <button className={`${styles.navItem} ${index === 0 ? styles.activeNav : ''}`}>
+            <div key={cat.id} style={{ display: 'flex', alignItems: 'center' }}>
+              <button 
+                className={`${styles.navItem} ${selectedCategory === cat.slug ? styles.active : ''}`}
+                onClick={() => setSelectedCategory(cat.slug)}
+              >
                 <span className={styles.navIcon}>&#10086;</span>
                 {cat.name}
               </button>
@@ -177,23 +200,42 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Color <span className={styles.minus}>&minus;</span></h4>
               <div className={styles.colorFilters}>
-                {['#5e1b20', '#c23a2a', '#dfafa3', '#3a4a2b', '#1a1210'].map(color => (
+                {availableColors.map(color => (
                   <span 
                     key={color}
                     className={styles.colorFilter} 
+                    title={color}
                     style={{ 
                       backgroundColor: color, 
-                      border: selectedColor === color ? '2px solid #c9a15a' : '2px solid transparent'
+                      border: selectedColor === color ? '2px solid #c9a15a' : '2px solid rgba(255,255,255,0.2)'
                     }}
                     onClick={() => setSelectedColor(selectedColor === color ? null : color)}
                   />
                 ))}
-                <span className={styles.colorFilterMore}>+</span>
+                {availableColors.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No colors</span>}
               </div>
             </div>
             
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Fabric <span className={styles.plus}>+</span></h4>
+              {availableFabrics.map(fabric => (
+                <label key={fabric} className={styles.radioLabel}>
+                  <input 
+                    type="radio" 
+                    name="fabric" 
+                    checked={selectedFabric === fabric} 
+                    onChange={() => setSelectedFabric(selectedFabric === fabric ? null : fabric)} 
+                    onClick={(e) => {
+                      if (selectedFabric === fabric) {
+                        e.preventDefault();
+                        setSelectedFabric(null);
+                      }
+                    }}
+                  />
+                  <span className={styles.radioText}>{fabric}</span>
+                </label>
+              ))}
+              {availableFabrics.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No fabrics</span>}
             </div>
             
             <div className={styles.filterGroup}>
@@ -252,7 +294,11 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                     colors={product.colors}
                     extraColorsCount={product.extraColorsCount}
                     onAddToCart={() => onAddToCart && onAddToCart(product)}
-                    onInquiry={() => window.location.href = '/quote'}
+                    onInquiry={() => {
+                      if (!whatsappNumber) return;
+                      const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${window.location.origin}/#collections`;
+                      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+                    }}
                   />
                 ))
               )}

@@ -7,6 +7,8 @@ import { getSetting, setSetting } from "@/lib/productService";
 
 export default function SettingsPage() {
   const [whatsapp, setWhatsapp] = useState("");
+  const [storeEmail, setStoreEmail] = useState("");
+  const [storeAddress, setStoreAddress] = useState("");
   const [priceFilterInterval, setPriceFilterInterval] = useState("4000");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -15,6 +17,10 @@ export default function SettingsPage() {
     const fetchSettings = async () => {
       const number = await getSetting("whatsappNumber");
       if (number) setWhatsapp(number);
+      const email = await getSetting("storeEmail");
+      if (email) setStoreEmail(email);
+      const address = await getSetting("storeAddress");
+      if (address) setStoreAddress(address);
       const interval = await getSetting("priceFilterInterval");
       if (interval) setPriceFilterInterval(interval);
     };
@@ -28,6 +34,8 @@ export default function SettingsPage() {
     
     try {
       await setSetting("whatsappNumber", whatsapp);
+      await setSetting("storeEmail", storeEmail);
+      await setSetting("storeAddress", storeAddress);
       await setSetting("priceFilterInterval", priceFilterInterval);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
@@ -101,6 +109,54 @@ export default function SettingsPage() {
               onChange={(e) => setPriceFilterInterval(e.target.value)}
               min="1000"
               step="1000"
+              style={{ 
+                width: '100%', 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                padding: '1rem', 
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: '1rem'
+              }}
+              required
+            />
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="storeEmail" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Store Email
+            </label>
+            <input 
+              type="email" 
+              id="storeEmail"
+              value={storeEmail}
+              onChange={(e) => setStoreEmail(e.target.value)}
+              placeholder="contact@houseofshri.com"
+              style={{ 
+                width: '100%', 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                padding: '1rem', 
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: '1rem'
+              }}
+              required
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="storeAddress" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Store Address
+            </label>
+            <input 
+              type="text" 
+              id="storeAddress"
+              value={storeAddress}
+              onChange={(e) => setStoreAddress(e.target.value)}
+              placeholder="Surat, Gujarat, India"
               style={{ 
                 width: '100%', 
                 backgroundColor: 'rgba(0,0,0,0.3)', 

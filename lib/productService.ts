@@ -20,6 +20,7 @@ export interface Product {
   price: number;
   image: string;
   category: string;
+  fabric?: string;
   isNew: boolean;
   colors: string[];
   extraColorsCount: number;
@@ -35,6 +36,7 @@ let mockProducts: Product[] = [
     price: 18500,
     image: "/collections/bridal.jpg",
     category: "bridal",
+    fabric: "Silk",
     isNew: true,
     colors: ["#5e1b20", "#c23a2a"],
     extraColorsCount: 0,
@@ -42,13 +44,14 @@ let mockProducts: Product[] = [
   },
   {
     id: "mock2",
-    productCode: "SR-2001",
-    title: "Banarasi Silk Saree",
-    price: 4500,
-    image: "/collections/saree.jpg",
-    category: "sarees",
+    productCode: "PW-2001",
+    title: "Pastel Pink Party Wear Lehenga",
+    price: 8500,
+    image: "/collections/fusion.jpg",
+    category: "party-wear",
+    fabric: "Georgette",
     isNew: false,
-    colors: ["#6c1d32", "#d9a05b"],
+    colors: ["#ffc0cb", "#ffd1dc"],
     extraColorsCount: 0,
     createdAt: Date.now() - 1000
   }
@@ -115,11 +118,12 @@ export interface Category {
 
 const CATEGORIES_COLLECTION = "categories";
 let mockCategories: Category[] = [
-  { id: "c1", name: "Bridal Lehengas", slug: "bridal", image: "/collections/bridal_cat.jpg", createdAt: Date.now() },
-  { id: "c2", name: "Sarees", slug: "sarees", image: "/collections/saree_cat.jpg", createdAt: Date.now() - 100 },
-  { id: "c3", name: "Suits", slug: "suits", image: "/collections/suit_cat.jpg", createdAt: Date.now() - 200 },
-  { id: "c4", name: "Fusion Wear", slug: "fusion", image: "/collections/fusion_cat.jpg", createdAt: Date.now() - 300 },
-  { id: "c5", name: "Fabrics", slug: "fabrics", image: "/collections/fabric_cat.jpg", createdAt: Date.now() - 400 },
+  { id: "c1", name: "Bridal Lehengas", slug: "bridal", image: "/collections/bridal.jpg", createdAt: Date.now() },
+  { id: "c2", name: "Party Wear Lehengas", slug: "party-wear", image: "/collections/fusion.jpg", createdAt: Date.now() - 100 },
+  { id: "c3", name: "Haldi Lehengas", slug: "haldi", image: "/collections/suits.jpg", createdAt: Date.now() - 200 },
+  { id: "c4", name: "Low Range Lehengas", slug: "low-range", image: "/collections/fabrics.jpg", createdAt: Date.now() - 300 },
+  { id: "c5", name: "Mid Range Lehengas", slug: "mid-range", image: "/collections/saree.jpg", createdAt: Date.now() - 400 },
+  { id: "c6", name: "High Range Lehengas", slug: "high-range", image: "/collections/bridal_cat.jpg", createdAt: Date.now() - 500 },
 ];
 
 export const getCategories = async (): Promise<Category[]> => {
@@ -166,7 +170,9 @@ export const deleteCategory = async (id: string): Promise<void> => {
 // --- SETTINGS SERVICES ---
 const SETTINGS_COLLECTION = "settings";
 let mockSettings: Record<string, string> = {
-  "whatsappNumber": "+911234567890" // Default mock number
+  "whatsappNumber": "+911234567890",
+  "storeEmail": "contact@houseofshri.com",
+  "storeAddress": "Surat, Gujarat, India"
 };
 
 export const getSetting = async (key: string): Promise<string | null> => {

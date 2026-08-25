@@ -8,10 +8,11 @@ import { useState, useEffect } from "react";
 
 const HERO_CATEGORIES = [
   { id: "c1", name: "Bridal Lehengas", image: "/collections/bridal.jpg" },
-  { id: "c2", name: "Sarees", image: "/collections/saree.jpg" },
-  { id: "c3", name: "Suits", image: "/collections/suits.jpg" },
-  { id: "c4", name: "Fusion Wear", image: "/collections/fusion.jpg" },
-  { id: "c5", name: "Fabrics", image: "/collections/fabrics.jpg" },
+  { id: "c2", name: "Party Wear Lehengas", image: "/collections/fusion.jpg" },
+  { id: "c3", name: "Haldi Lehengas", image: "/collections/suits.jpg" },
+  { id: "c4", name: "Low Range Lehengas", image: "/collections/fabrics.jpg" },
+  { id: "c5", name: "Mid Range Lehengas", image: "/collections/saree.jpg" },
+  { id: "c6", name: "High Range Lehengas", image: "/collections/bridal_cat.jpg" },
 ];
 
 export default function Hero() {

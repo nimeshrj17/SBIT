@@ -4,9 +4,15 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 
 interface FooterProps {
   whatsappNumber?: string;
+  storeEmail?: string;
+  storeAddress?: string;
 }
 
-export default function Footer({ whatsappNumber = "+91 123 456 7890" }: FooterProps) {
+export default function Footer({ 
+  whatsappNumber = "+91 123 456 7890",
+  storeEmail = "contact@houseofshri.com",
+  storeAddress = "Surat, Gujarat, India"
+}: FooterProps) {
   return (
     <footer id="contact" className={styles.footer}>
       <div className={styles.container}>
@@ -85,7 +91,7 @@ export default function Footer({ whatsappNumber = "+91 123 456 7890" }: FooterPr
           <div className={styles.contactDetails}>
             <div className={styles.contactItem}>
               <MapPin size={18} className={styles.contactIcon} />
-              <span>Surat Textile Market, Surat, Gujarat, India</span>
+              <span>{storeAddress}</span>
             </div>
             <div className={styles.contactItem}>
               <Phone size={18} className={styles.contactIcon} />
@@ -93,7 +99,7 @@ export default function Footer({ whatsappNumber = "+91 123 456 7890" }: FooterPr
             </div>
             <div className={styles.contactItem}>
               <Mail size={18} className={styles.contactIcon} />
-              <span>hello@houseofshri.com</span>
+              <span>{storeEmail}</span>
             </div>
           </div>
           

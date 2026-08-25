@@ -175,8 +175,25 @@ const AccordionGallery = ({
 
   useEffect(() => {
     applyLayout(!firstRunRef.current);
+    
+    // Smooth scroll the native container to the active panel on mobile
+    if (window.innerWidth <= 768 && rootRef.current) {
+      const activePanel = panelRefs.current[active];
+      if (activePanel) {
+        const container = rootRef.current;
+        const panelLeft = activePanel.offsetLeft;
+        const panelWidth = activePanel.offsetWidth;
+        const containerWidth = container.offsetWidth;
+        
+        container.scrollTo({
+          left: panelLeft - (containerWidth / 2) + (panelWidth / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+    
     firstRunRef.current = false;
-  }, [applyLayout]);
+  }, [applyLayout, active]);
 
   useEffect(
     () => () => {
@@ -184,6 +201,15 @@ const AccordionGallery = ({
     },
     []
   );
+
+  // Auto-scroll logic
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % count);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(timer);
+  }, [count]);
 
   const handleEnter = (i: number) => {
     if (trigger === 'hover') setActive(i);

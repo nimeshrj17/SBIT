@@ -47,6 +47,7 @@ export default function CartTray({ items, onRemove, whatsappNumber }: CartTrayPr
     let text = "Hi, I'm interested in ordering the following items:\n\n";
     items.forEach((item, index) => {
       text += `${index + 1}. ${item.title} (Code: ${item.productCode || item.id}) - Qty: ${quantities[item.id] || 1}\n`;
+      text += `Link: ${window.location.origin}/#collections\n\n`;
     });
     
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");

@@ -16,10 +16,22 @@ const emptyProduct: Omit<Product, "id"> = {
   price: 0,
   image: "",
   category: "",
+  fabric: "",
   isNew: false,
   colors: [],
   extraColorsCount: 0
 };
+
+const FABRICS = [
+  "Silk",
+  "Georgette",
+  "Net",
+  "Velvet",
+  "Organza",
+  "Crepe",
+  "Cotton",
+  "Chiffon"
+];
 
 export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }: ProductModalProps) {
   const [formData, setFormData] = useState<Omit<Product, "id">>(emptyProduct);
@@ -70,11 +82,9 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   };
 
   const handleAddColor = () => {
-    if (colorInput && /^#[0-9A-F]{6}$/i.test(colorInput)) {
+    if (colorInput) {
       setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput] }));
       setColorInput("");
-    } else {
-      alert("Please enter a valid hex color code (e.g. #ff0000)");
     }
   };
 
@@ -141,27 +151,39 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
               </select>
             </div>
           </div>
-          
-          <div className={styles.formGroup}>
-            <label htmlFor="image">Upload Product Image</label>
-            <input type="file" id="image" accept="image/*" onChange={handleImageUpload} style={{ padding: '0.5rem 0' }} />
-            {formData.image && (
-              <div style={{ marginTop: '0.5rem', width: '100px', height: '100px', position: 'relative', borderRadius: '4px', overflow: 'hidden' }}>
-                <img src={formData.image} alt="Preview" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
-              </div>
-            )}
+
+          <div className={styles.row}>
+            <div className={styles.formGroup}>
+              <label htmlFor="fabric">Fabric</label>
+              <select id="fabric" name="fabric" value={formData.fabric || ""} onChange={handleChange}>
+                <option value="">Select a fabric</option>
+                {FABRICS.map(fabric => (
+                  <option key={fabric} value={fabric}>{fabric}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="image">Upload Product Image</label>
+              <input type="file" id="image" accept="image/*" onChange={handleImageUpload} style={{ padding: '0.5rem 0' }} />
+              {formData.image && (
+                <div style={{ marginTop: '0.5rem', width: '100px', height: '100px', position: 'relative', borderRadius: '4px', overflow: 'hidden' }}>
+                  <img src={formData.image} alt="Preview" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                </div>
+              )}
+            </div>
           </div>
           
           <div className={styles.formGroup}>
             <label>Colors (Hex Codes)</label>
             <div className={styles.colorInputRow}>
               <input 
-                type="text" 
-                value={colorInput} 
+                type="color" 
+                value={colorInput || "#000000"} 
                 onChange={(e) => setColorInput(e.target.value)} 
-                placeholder="#000000"
+                style={{ height: '40px', width: '60px', padding: '0', cursor: 'pointer' }}
               />
-              <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add</button>
+              <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add Color</button>
             </div>
             <div className={styles.colorChips}>
               {formData.colors.map((c, i) => (
