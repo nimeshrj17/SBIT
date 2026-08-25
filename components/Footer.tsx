@@ -110,7 +110,7 @@ export default function Footer({
       
       <div className={styles.bottomBar}>
         <p>&copy; {new Date().getFullYear()} House of Shri. All rights reserved.</p>
-        <p>Crafted with elegance.</p>
+        <p>Built by <a href="https://www.stacktribe.dev/" target="_blank" rel="noopener noreferrer" style={{ color: '#c9a15a', textDecoration: 'none', fontWeight: 500 }}>Stacktribe</a></p>
       </div>
     </footer>
   );
