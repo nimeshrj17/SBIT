@@ -422,7 +422,7 @@
 
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
   .productsTopBar {
@@ -455,6 +455,6 @@
 
 @media (max-width: 480px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
