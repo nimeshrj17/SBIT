@@ -27,7 +27,7 @@ const emptyProduct: Omit<Product, "id"> = {
 
 
 export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }: ProductModalProps) {
-  const [formData, setFormData] = useState<Omit<Product, "id">>(emptyProduct);
+  const [formData, setFormData] = useState<Omit<Product, "id">>(productToEdit || emptyProduct);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [colorInput, setColorInput] = useState("");
@@ -63,14 +63,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
     fetchCatsAndSettings();
   }, []);
 
-  useEffect(() => {
-    if (productToEdit) {
-      setFormData(productToEdit);
-    } else {
-      setFormData(emptyProduct);
-    }
-    setColorInput("");
-  }, [productToEdit, isOpen]);
+  // State is now initialized from props since the component is conditionally mounted
 
   if (!isOpen) return null;
 

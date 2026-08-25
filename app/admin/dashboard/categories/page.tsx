@@ -108,12 +108,14 @@ export default function AdminCategories() {
         </table>
       </div>
 
-      <CategoryModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        categoryToEdit={editingCategory}
-        onSaved={fetchCategories}
-      />
+      {isModalOpen && (
+        <CategoryModal 
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          categoryToEdit={editingCategory}
+          onSaved={fetchCategories}
+        />
+      )}
     </div>
   );
 }

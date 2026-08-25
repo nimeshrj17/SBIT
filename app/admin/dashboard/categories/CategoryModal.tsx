@@ -19,16 +19,10 @@ const emptyCategory: Omit<Category, "id"> = {
 };
 
 export default function CategoryModal({ isOpen, onClose, categoryToEdit, onSaved }: CategoryModalProps) {
-  const [formData, setFormData] = useState<Omit<Category, "id">>(emptyCategory);
+  const [formData, setFormData] = useState<Omit<Category, "id">>(categoryToEdit || emptyCategory);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (categoryToEdit) {
-      setFormData(categoryToEdit);
-    } else {
-      setFormData(emptyCategory);
-    }
-  }, [categoryToEdit, isOpen]);
+  // State is now initialized from props since the component is conditionally mounted
 
   if (!isOpen) return null;
 

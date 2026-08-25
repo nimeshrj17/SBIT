@@ -159,12 +159,14 @@ export default function AdminDashboard() {
         </table>
       </div>
 
-      <ProductModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        productToEdit={editingProduct}
-        onSaved={fetchProducts}
-      />
+      {isModalOpen && (
+        <ProductModal 
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          productToEdit={editingProduct}
+          onSaved={fetchProducts}
+        />
+      )}
     </div>
   );
 }
