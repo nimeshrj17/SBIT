@@ -79,8 +79,14 @@ export const getProducts = async (): Promise<Product[]> => {
     const querySnapshot = await withTimeout(getDocs(q));
     return querySnapshot.docs.map(d => ({ id: d.id, ...d.data() } as Product));
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
+    console.warn("Error fetching products with orderBy, trying fallback:", error);
+    try {
+      const querySnapshot = await withTimeout(getDocs(collection(db, COLLECTION_NAME)));
+      return querySnapshot.docs.map(d => ({ id: d.id, ...d.data() } as Product));
+    } catch (e) {
+      console.error("Error fetching products:", e);
+      return [];
+    }
   }
 };
 

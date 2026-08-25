@@ -43,7 +43,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
       }
     }
     
-    if (selectedColor && !p.colors.includes(selectedColor)) return false;
+    if (selectedColor && !(p.colors || []).includes(selectedColor)) return false;
     
     if (selectedFabric && p.fabric !== selectedFabric) return false;
     
