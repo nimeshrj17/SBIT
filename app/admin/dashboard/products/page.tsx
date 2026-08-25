@@ -140,7 +140,9 @@ export default function AdminDashboard() {
                   {enablePriceRange && (
                     <td>
                       <span className={styles.priceText}>
-                        ₹{product.price.toLocaleString('en-IN')} - ₹{(product.price + priceInterval - 1).toLocaleString('en-IN')}
+                        {product.price > 12000 
+                          ? `₹12,000+` 
+                          : `₹${product.price.toLocaleString('en-IN')} - ₹${(product.price + priceInterval - 1).toLocaleString('en-IN')}`}
                       </span>
                     </td>
                   )}

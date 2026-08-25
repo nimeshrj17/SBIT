@@ -191,15 +191,28 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
                   required
                 >
                   <option value={0} disabled>Select a price range</option>
-                  {Array.from({ length: 20 }).map((_, i) => {
-                    const lower = (i * priceInterval) + 1; // e.g. 1
-                    const upper = (i + 1) * priceInterval; // e.g. 4000
-                    return (
-                      <option key={i} value={lower}>
-                        ₹{lower.toLocaleString('en-IN')} - ₹{upper.toLocaleString('en-IN')}
+                  {(() => {
+                    const options = [];
+                    let current = 0;
+                    const MAX_LIMIT = 12000;
+                    
+                    while (current < MAX_LIMIT) {
+                      const lower = current + 1;
+                      const upper = current + priceInterval;
+                      options.push(
+                        <option key={lower} value={lower}>
+                          ₹{lower.toLocaleString('en-IN')} - ₹{upper.toLocaleString('en-IN')}
+                        </option>
+                      );
+                      current += priceInterval;
+                    }
+                    options.push(
+                      <option key={MAX_LIMIT + 1} value={MAX_LIMIT + 1}>
+                        ₹{(MAX_LIMIT).toLocaleString('en-IN')}+
                       </option>
                     );
-                  })}
+                    return options;
+                  })()}
                 </select>
               </div>
             )}

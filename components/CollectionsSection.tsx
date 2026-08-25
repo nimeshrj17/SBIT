@@ -41,6 +41,9 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         const min = parseInt(parts[0].replace(/\D/g, ''), 10);
         const max = parseInt(parts[1].replace(/\D/g, ''), 10);
         if (p.price < min || p.price >= max) return false;
+      } else if (selectedPrice.includes('+')) {
+        const min = parseInt(selectedPrice.replace(/\D/g, ''), 10);
+        if (p.price < min) return false;
       }
     }
     
@@ -67,16 +70,15 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         setEnablePriceRange(enablePrice === "true");
       }
       
-      let maxPrice = 0;
-      prods.forEach(p => { if (p.price > maxPrice) maxPrice = p.price; });
-      
       const buckets = ["All Prices"];
       let current = 0;
-      while (current < maxPrice) {
+      const MAX_LIMIT = 12000;
+      
+      while (current < MAX_LIMIT) {
         buckets.push(`₹${current.toLocaleString('en-IN')} - ₹${(current + interval).toLocaleString('en-IN')}`);
         current += interval;
       }
-      if (maxPrice === 0) buckets.push(`₹0 - ₹${interval.toLocaleString('en-IN')}`);
+      buckets.push(`₹${MAX_LIMIT.toLocaleString('en-IN')}+`);
       
       const uniqueColors = new Set<string>();
       const uniqueFabrics = new Set<string>();
