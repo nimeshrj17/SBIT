@@ -34,14 +34,27 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const [colorHexInput, setColorHexInput] = useState("#c9a15a");
 
   const [priceInterval, setPriceInterval] = useState(4000);
+  const [availableColors, setAvailableColors] = useState<string[]>([]);
+  const [availableFabrics, setAvailableFabrics] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCatsAndSettings = async () => {
-      const [cats, intervalStr] = await Promise.all([getCategories(), getSetting("priceFilterInterval")]);
+      const [cats, intervalStr, colorsStr, fabricsStr] = await Promise.all([
+        getCategories(), 
+        getSetting("priceFilterInterval"),
+        getSetting("availableColors"),
+        getSetting("availableFabrics")
+      ]);
       setCategories(cats);
       if (intervalStr) {
         setPriceInterval(parseInt(intervalStr, 10));
       }
+      
+      const defaultColors = "Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani";
+      const defaultFabrics = "Silk, Georgette, Velvet, Net, Crepe, Organza";
+      
+      setAvailableColors((colorsStr || defaultColors).split(',').map(s => s.trim()).filter(Boolean));
+      setAvailableFabrics((fabricsStr || defaultFabrics).split(',').map(s => s.trim()).filter(Boolean));
     };
     fetchCatsAndSettings();
   }, []);
@@ -216,14 +229,18 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           <div className={styles.row}>
             <div className={styles.formGroup}>
               <label htmlFor="fabric">Fabric</label>
-              <input 
-                type="text" 
+              <select 
                 id="fabric" 
                 name="fabric" 
                 value={formData.fabric || ""} 
-                onChange={handleChange} 
-                placeholder="e.g. Silk, Velvet" 
-              />
+                onChange={handleChange}
+                style={{ width: '100%', padding: '0.75rem', backgroundColor: '#222', border: '1px solid #444', borderRadius: '4px', color: '#fff', fontSize: '1rem' }}
+              >
+                <option value="" disabled>Select Fabric</option>
+                {availableFabrics.map((f, i) => (
+                  <option key={i} value={f}>{f}</option>
+                ))}
+              </select>
             </div>
             
             <div className={styles.formGroup}>
@@ -240,19 +257,16 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           <div className={styles.formGroup}>
             <label>Color Names</label>
             <div className={styles.colorInputRow}>
-              <input 
-                type="text" 
-                value={colorInput || ""} 
-                onChange={(e) => setColorInput(e.target.value)} 
-                placeholder="e.g. Emerald Green"
+              <select
+                value={colorInput}
+                onChange={(e) => setColorInput(e.target.value)}
                 style={{ height: '40px', flex: 1, padding: '0 1rem', borderRadius: '4px', border: '1px solid #444', background: '#222', color: '#fff' }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleAddColor();
-                  }
-                }}
-              />
+              >
+                <option value="" disabled>Select Color</option>
+                {availableColors.map((c, i) => (
+                  <option key={i} value={c}>{c}</option>
+                ))}
+              </select>
               <input 
                 type="color"
                 value={colorHexInput}

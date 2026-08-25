@@ -60,8 +60,7 @@ export default function ProductCard({
         <h3 className={styles.title}>{title}</h3>
         {productCode && <span className={styles.productCode}>{productCode}</span>}
         
-        <div className={styles.priceRow}>
-          <span className={styles.price}>{priceDisplay || formattedPrice}</span>
+        <div className={styles.priceRow} style={{ display: 'none' }}>
         </div>
         
         {colors.length > 0 && (

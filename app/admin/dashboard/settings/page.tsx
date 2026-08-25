@@ -10,6 +10,8 @@ export default function SettingsPage() {
   const [storeEmail, setStoreEmail] = useState("");
   const [storeAddress, setStoreAddress] = useState("");
   const [priceFilterInterval, setPriceFilterInterval] = useState("4000");
+  const [availableColors, setAvailableColors] = useState("Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani");
+  const [availableFabrics, setAvailableFabrics] = useState("Silk, Georgette, Velvet, Net, Crepe, Organza");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -23,6 +25,10 @@ export default function SettingsPage() {
       if (address) setStoreAddress(address);
       const interval = await getSetting("priceFilterInterval");
       if (interval) setPriceFilterInterval(interval);
+      const colors = await getSetting("availableColors");
+      if (colors) setAvailableColors(colors);
+      const fabrics = await getSetting("availableFabrics");
+      if (fabrics) setAvailableFabrics(fabrics);
     };
     fetchSettings();
   }, []);
@@ -37,6 +43,8 @@ export default function SettingsPage() {
       await setSetting("storeEmail", storeEmail);
       await setSetting("storeAddress", storeAddress);
       await setSetting("priceFilterInterval", priceFilterInterval);
+      await setSetting("availableColors", availableColors);
+      await setSetting("availableFabrics", availableFabrics);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
@@ -200,6 +208,55 @@ export default function SettingsPage() {
             )}
           </div>
           
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="availableColors" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Available Colors (Comma-separated)
+            </label>
+            <p style={{ color: 'rgba(245, 239, 230, 0.5)', fontSize: '0.8rem', margin: '0 0 0.5rem 0' }}>
+              These options will appear in the dropdown when adding a product.
+            </p>
+            <textarea 
+              id="availableColors"
+              value={availableColors}
+              onChange={(e) => setAvailableColors(e.target.value)}
+              placeholder="Peach, Maroon, Gold"
+              rows={3}
+              style={{ 
+                width: '100%', 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                padding: '1rem', 
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: '0.9rem'
+              }}
+            />
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="availableFabrics" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Available Fabrics (Comma-separated)
+            </label>
+            <textarea 
+              id="availableFabrics"
+              value={availableFabrics}
+              onChange={(e) => setAvailableFabrics(e.target.value)}
+              placeholder="Silk, Velvet, Organza"
+              rows={2}
+              style={{ 
+                width: '100%', 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                padding: '1rem', 
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: '0.9rem'
+              }}
+            />
+          </div>
+
         </form>
       </div>
     </div>
