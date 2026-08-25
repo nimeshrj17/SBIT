@@ -197,24 +197,31 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Color <span className={styles.minus}>&minus;</span></h4>
               <div className={styles.colorFilters}>
-                {availableColors.map(color => (
-                  <span 
-                    key={color}
-                    onClick={() => setSelectedColor(selectedColor === color ? null : color)}
-                    style={{ 
-                      fontSize: '0.8rem', 
-                      backgroundColor: selectedColor === color ? '#c9a15a' : '#222', 
-                      color: selectedColor === color ? '#000' : '#fff',
-                      padding: '4px 10px', 
-                      borderRadius: '4px', 
-                      cursor: 'pointer',
-                      border: selectedColor === color ? '1px solid #c9a15a' : '1px solid #444',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    {color}
-                  </span>
-                ))}
+                {availableColors.map(color => {
+                  const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
+                  return (
+                    <span 
+                      key={color}
+                      onClick={() => setSelectedColor(selectedColor === color ? null : color)}
+                      style={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '0.8rem', 
+                        backgroundColor: selectedColor === color ? '#c9a15a' : '#222', 
+                        color: selectedColor === color ? '#000' : '#fff',
+                        padding: '4px 10px', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer',
+                        border: selectedColor === color ? '1px solid #c9a15a' : '1px solid #444',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      {hex !== 'transparent' && <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: hex }}></span>}
+                      {name}
+                    </span>
+                  );
+                })}
                 {availableColors.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No colors</span>}
               </div>
             </div>

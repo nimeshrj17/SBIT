@@ -31,6 +31,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [colorInput, setColorInput] = useState("");
+  const [colorHexInput, setColorHexInput] = useState("#c9a15a");
 
   useEffect(() => {
     const fetchCats = async () => {
@@ -47,6 +48,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
       setFormData(emptyProduct);
     }
     setColorInput("");
+    setColorHexInput("#c9a15a");
   }, [productToEdit, isOpen]);
 
   if (!isOpen) return null;
@@ -110,7 +112,8 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
 
   const handleAddColor = () => {
     if (colorInput) {
-      setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput] }));
+      const colorValue = `${colorInput.trim()}|${colorHexInput}`;
+      setFormData(prev => ({ ...prev, colors: [...prev.colors, colorValue] }));
       setColorInput("");
     }
   };
@@ -218,7 +221,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
                 type="text" 
                 value={colorInput || ""} 
                 onChange={(e) => setColorInput(e.target.value)} 
-                placeholder="e.g. Emerald Green, Rose Gold"
+                placeholder="e.g. Emerald Green"
                 style={{ height: '40px', flex: 1, padding: '0 1rem', borderRadius: '4px', border: '1px solid #444', background: '#222', color: '#fff' }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -227,15 +230,26 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
                   }
                 }}
               />
+              <input 
+                type="color"
+                value={colorHexInput}
+                onChange={(e) => setColorHexInput(e.target.value)}
+                style={{ height: '40px', width: '50px', padding: '0', cursor: 'pointer', borderRadius: '4px', border: 'none' }}
+                title="Select matching color dot"
+              />
               <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add Color</button>
             </div>
             <div className={styles.colorChips}>
-              {formData.colors.map((c, i) => (
-                <div key={i} className={styles.colorChip}>
-                  {c}
-                  <button type="button" onClick={() => handleRemoveColor(i)}>&times;</button>
-                </div>
-              ))}
+              {formData.colors.map((c, i) => {
+                const [name, hex] = c.includes('|') ? c.split('|') : [c, '#ccc'];
+                return (
+                  <div key={i} className={styles.colorChip}>
+                    <span style={{ display: 'inline-block', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: hex, marginRight: '6px' }}></span>
+                    {name}
+                    <button type="button" onClick={() => handleRemoveColor(i)}>&times;</button>
+                  </div>
+                );
+              })}
             </div>
           </div>
           

@@ -60,14 +60,18 @@ export default function ProductCard({
         
         {colors.length > 0 && (
           <div className={styles.colorsRow} style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-            {colors.map((color, index) => (
-              <span 
-                key={index} 
-                style={{ fontSize: '0.75rem', backgroundColor: '#eee', padding: '2px 6px', borderRadius: '4px', color: '#333' }}
-              >
-                {color}
-              </span>
-            ))}
+            {colors.map((color, index) => {
+              const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
+              return (
+                <span 
+                  key={index} 
+                  style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', backgroundColor: '#eee', padding: '2px 6px', borderRadius: '4px', color: '#333' }}
+                >
+                  {hex !== 'transparent' && <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: hex }}></span>}
+                  {name}
+                </span>
+              );
+            })}
             {extraColorsCount > 0 && (
               <span className={styles.extraColors}>+{extraColorsCount}</span>
             )}
