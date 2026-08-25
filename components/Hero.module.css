@@ -248,6 +248,16 @@
     max-width: 100%;
     padding: 8rem 2rem 4rem 2rem;
   }
+  .rightColumn {
+    padding-right: 0;
+    padding-bottom: 4rem;
+  }
+  .heroCarouselFrame {
+    width: 90%;
+    max-width: 400px;
+    height: 60vw;
+    max-height: 550px;
+  }
   .title {
     font-size: 3.5rem;
   }
@@ -266,7 +276,7 @@
     font-size: 2.2rem;
   }
   .content {
-    padding: 6rem 1.5rem 3rem 1.5rem;
+    padding: 10rem 1.5rem 3rem 1.5rem;
   }
   .actions {
     flex-direction: column;

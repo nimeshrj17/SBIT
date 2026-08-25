@@ -165,11 +165,6 @@
   .ag-panel--active {
     flex: 0 0 calc(60% - 6px) !important;
   }
-  .accordion-gallery .ag-panel__media {
-    width: 100%;
-    height: 100%;
-    transform: none !important;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
