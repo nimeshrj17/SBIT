@@ -293,27 +293,34 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
               ) : filteredProducts.length === 0 ? (
                 <p style={{ color: 'rgba(245, 239, 230, 0.5)', gridColumn: '1 / -1' }}>No products match your filters.</p>
               ) : (
-                filteredProducts.map((product) => (
-                  <ProductCard 
-                    key={product.id}
-                    image={product.image}
-                    title={product.title}
-                    productCode={product.productCode || product.id}
-                    price={product.price}
-                    isNew={product.isNew}
-                    isPopular={product.isPopular}
-                    isBestSeller={product.isBestSeller}
-                    colors={product.colors}
-                    extraColorsCount={product.extraColorsCount}
-                    onAddToCart={() => onAddToCart && onAddToCart(product)}
-                    onInquiry={() => {
-                      if (!whatsappNumber) return;
-                      const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${window.location.origin}/#collections`;
-                      const formattedNumber = whatsappNumber.replace(/\D/g, '');
-                      window.open(`https://wa.me/${formattedNumber}?text=${encodeURIComponent(text)}`, "_blank");
-                    }}
-                  />
-                ))
+                filteredProducts.map((product) => {
+                  const lower = product.price;
+                  const upper = lower + priceFilterInterval - 1;
+                  const priceDisplay = `₹${lower.toLocaleString('en-IN')} - ₹${upper.toLocaleString('en-IN')}`;
+                  
+                  return (
+                    <ProductCard 
+                      key={product.id}
+                      image={product.image}
+                      title={product.title}
+                      productCode={product.productCode || product.id}
+                      price={product.price}
+                      priceDisplay={priceDisplay}
+                      isNew={product.isNew}
+                      isPopular={product.isPopular}
+                      isBestSeller={product.isBestSeller}
+                      colors={product.colors}
+                      extraColorsCount={product.extraColorsCount}
+                      onAddToCart={() => onAddToCart && onAddToCart(product)}
+                      onInquiry={() => {
+                        if (!whatsappNumber) return;
+                        const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${window.location.origin}/#collections`;
+                        const formattedNumber = whatsappNumber.replace(/\D/g, '');
+                        window.open(`https://wa.me/${formattedNumber}?text=${encodeURIComponent(text)}`, "_blank");
+                      }}
+                    />
+                  );
+                })
               )}
             </div>
             

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Product, addProduct, updateProduct, getCategories, Category } from "@/lib/productService";
+import { Product, addProduct, updateProduct, getCategories, Category, getSetting } from "@/lib/productService";
 import styles from "./ProductModal.module.css";
 import { X } from "lucide-react";
 
@@ -33,12 +33,17 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const [colorInput, setColorInput] = useState("");
   const [colorHexInput, setColorHexInput] = useState("#c9a15a");
 
+  const [priceInterval, setPriceInterval] = useState(4000);
+
   useEffect(() => {
-    const fetchCats = async () => {
-      const cats = await getCategories();
+    const fetchCatsAndSettings = async () => {
+      const [cats, intervalStr] = await Promise.all([getCategories(), getSetting("priceFilterInterval")]);
       setCategories(cats);
+      if (intervalStr) {
+        setPriceInterval(parseInt(intervalStr, 10));
+      }
     };
-    fetchCats();
+    fetchCatsAndSettings();
   }, []);
 
   useEffect(() => {
@@ -167,8 +172,26 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           
           <div className={styles.row}>
             <div className={styles.formGroup}>
-              <label htmlFor="price">Price (₹)</label>
-              <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} required min="0" />
+              <label htmlFor="price">Price Range</label>
+              <select 
+                id="price" 
+                name="price" 
+                value={formData.price} 
+                onChange={handleChange}
+                style={{ width: '100%', padding: '0.75rem', backgroundColor: '#222', border: '1px solid #444', borderRadius: '4px', color: '#fff', fontSize: '1rem' }}
+                required
+              >
+                <option value={0} disabled>Select a price range</option>
+                {Array.from({ length: 20 }).map((_, i) => {
+                  const lower = (i * priceInterval) + 1; // e.g. 1
+                  const upper = (i + 1) * priceInterval; // e.g. 4000
+                  return (
+                    <option key={i} value={lower}>
+                      ₹{lower.toLocaleString('en-IN')} - ₹{upper.toLocaleString('en-IN')}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             
             <div className={styles.formGroup}>

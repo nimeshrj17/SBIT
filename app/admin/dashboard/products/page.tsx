@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getProducts, deleteProduct, Product } from "@/lib/productService";
+import { Product, getProducts, deleteProduct, getSetting } from "@/lib/productService";
 import ProductModal from "./ProductModal";
 import styles from "./page.module.css";
 import { Plus, Edit2, Trash2, Search } from "lucide-react";
@@ -14,11 +14,15 @@ export default function AdminDashboard() {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>(undefined);
+  const [priceInterval, setPriceInterval] = useState(4000);
 
   const fetchProducts = async () => {
     setLoading(true);
-    const data = await getProducts();
+    const [data, intervalStr] = await Promise.all([getProducts(), getSetting("priceFilterInterval")]);
     setProducts(data);
+    if (intervalStr) {
+      setPriceInterval(parseInt(intervalStr, 10));
+    }
     setLoading(false);
   };
 
@@ -127,7 +131,7 @@ export default function AdminDashboard() {
                   </td>
                   <td>
                     <span className={styles.priceText}>
-                      ₹{product.price.toLocaleString('en-IN')}
+                      ₹{product.price.toLocaleString('en-IN')} - ₹{(product.price + priceInterval - 1).toLocaleString('en-IN')}
                     </span>
                   </td>
                   <td className={styles.actionsCol}>

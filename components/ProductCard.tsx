@@ -8,6 +8,7 @@ interface ProductCardProps {
   title: string;
   productCode?: string;
   price: number;
+  priceDisplay?: string;
   isNew?: boolean;
   isPopular?: boolean;
   isBestSeller?: boolean;
@@ -22,6 +23,7 @@ export default function ProductCard({
   title,
   productCode,
   price,
+  priceDisplay,
   isNew = false,
   isPopular = false,
   isBestSeller = false,
@@ -57,6 +59,10 @@ export default function ProductCard({
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
         {productCode && <span className={styles.productCode}>{productCode}</span>}
+        
+        <div className={styles.priceRow}>
+          <span className={styles.price}>{priceDisplay || formattedPrice}</span>
+        </div>
         
         {colors.length > 0 && (
           <div className={styles.colorsRow} style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
