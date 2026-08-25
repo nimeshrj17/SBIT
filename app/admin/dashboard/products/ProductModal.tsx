@@ -31,7 +31,6 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [colorInput, setColorInput] = useState("");
-  const [colorHexInput, setColorHexInput] = useState("#c9a15a");
 
   const [priceInterval, setPriceInterval] = useState(4000);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -66,7 +65,6 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
       setFormData(emptyProduct);
     }
     setColorInput("");
-    setColorHexInput("#c9a15a");
   }, [productToEdit, isOpen]);
 
   if (!isOpen) return null;
@@ -129,9 +127,8 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   };
 
   const handleAddColor = () => {
-    if (colorInput) {
-      const colorValue = `${colorInput.trim()}|${colorHexInput}`;
-      setFormData(prev => ({ ...prev, colors: [...prev.colors, colorValue] }));
+    if (colorInput && !formData.colors.includes(colorInput)) {
+      setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput] }));
       setColorInput("");
     }
   };
@@ -263,17 +260,11 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
                 style={{ height: '40px', flex: 1, padding: '0 1rem', borderRadius: '4px', border: '1px solid #444', background: '#222', color: '#fff' }}
               >
                 <option value="" disabled>Select Color</option>
-                {availableColors.map((c, i) => (
-                  <option key={i} value={c}>{c}</option>
-                ))}
+                {availableColors.map((c, i) => {
+                  const [name] = c.includes('|') ? c.split('|') : [c];
+                  return <option key={i} value={c}>{name}</option>;
+                })}
               </select>
-              <input 
-                type="color"
-                value={colorHexInput}
-                onChange={(e) => setColorHexInput(e.target.value)}
-                style={{ height: '40px', width: '50px', padding: '0', cursor: 'pointer', borderRadius: '4px', border: 'none' }}
-                title="Select matching color dot"
-              />
               <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add Color</button>
             </div>
             <div className={styles.colorChips}>

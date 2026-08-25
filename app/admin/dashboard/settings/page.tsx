@@ -178,14 +178,139 @@ export default function SettingsPage() {
               required
             />
           </div>
+                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Available Colors
+            </label>
+            <p style={{ color: 'rgba(245, 239, 230, 0.5)', fontSize: '0.8rem', margin: '0 0 0.5rem 0' }}>
+              Add color names and their matching hex dot. These appear when adding products.
+            </p>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <input 
+                type="text" 
+                id="newColorName"
+                placeholder="e.g. Emerald Green"
+                style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.75rem', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('newColorName') as HTMLInputElement;
+                    const hexInput = document.getElementById('newColorHex') as HTMLInputElement;
+                    if (nameInput.value.trim()) {
+                      const newColor = `${nameInput.value.trim()}|${hexInput.value}`;
+                      setAvailableColors(prev => prev ? `${prev}, ${newColor}` : newColor);
+                      nameInput.value = "";
+                    }
+                  }
+                }}
+              />
+              <input 
+                type="color"
+                id="newColorHex"
+                defaultValue="#c9a15a"
+                style={{ width: '45px', height: '45px', padding: '0', cursor: 'pointer', borderRadius: '6px', border: 'none' }}
+                title="Select matching color dot"
+              />
+              <button 
+                type="button" 
+                style={{ backgroundColor: '#c9a15a', color: '#111', border: 'none', borderRadius: '6px', padding: '0 1rem', fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  const nameInput = document.getElementById('newColorName') as HTMLInputElement;
+                  const hexInput = document.getElementById('newColorHex') as HTMLInputElement;
+                  if (nameInput.value.trim()) {
+                    const newColor = `${nameInput.value.trim()}|${hexInput.value}`;
+                    setAvailableColors(prev => prev ? `${prev}, ${newColor}` : newColor);
+                    nameInput.value = "";
+                  }
+                }}
+              >
+                Add
+              </button>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {availableColors.split(',').map(c => c.trim()).filter(Boolean).map((color, idx) => {
+                const [name, hex] = color.includes('|') ? color.split('|') : [color, '#ccc'];
+                return (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.85rem', color: '#fff' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: hex }}></span>
+                    {name}
+                    <button 
+                      type="button" 
+                      style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '1rem', marginLeft: '4px', display: 'flex', alignItems: 'center' }}
+                      onClick={() => {
+                        const arr = availableColors.split(',').map(c => c.trim()).filter(Boolean);
+                        arr.splice(idx, 1);
+                        setAvailableColors(arr.join(', '));
+                      }}
+                    >&times;</button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Available Fabrics
+            </label>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <input 
+                type="text" 
+                id="newFabricName"
+                placeholder="e.g. Silk, Velvet"
+                style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.75rem', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('newFabricName') as HTMLInputElement;
+                    if (nameInput.value.trim()) {
+                      const newFab = nameInput.value.trim();
+                      setAvailableFabrics(prev => prev ? `${prev}, ${newFab}` : newFab);
+                      nameInput.value = "";
+                    }
+                  }
+                }}
+              />
+              <button 
+                type="button" 
+                style={{ backgroundColor: '#c9a15a', color: '#111', border: 'none', borderRadius: '6px', padding: '0 1rem', fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  const nameInput = document.getElementById('newFabricName') as HTMLInputElement;
+                  if (nameInput.value.trim()) {
+                    const newFab = nameInput.value.trim();
+                    setAvailableFabrics(prev => prev ? `${prev}, ${newFab}` : newFab);
+                    nameInput.value = "";
+                  }
+                }}
+              >
+                Add
+              </button>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {availableFabrics.split(',').map(c => c.trim()).filter(Boolean).map((fabric, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.85rem', color: '#fff' }}>
+                  {fabric}
+                  <button 
+                    type="button" 
+                    style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '1rem', marginLeft: '4px', display: 'flex', alignItems: 'center' }}
+                    onClick={() => {
+                      const arr = availableFabrics.split(',').map(c => c.trim()).filter(Boolean);
+                      arr.splice(idx, 1);
+                      setAvailableFabrics(arr.join(', '));
+                    }}
+                  >&times;</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
             <button 
               type="submit" 
               disabled={isSaving}
               style={{ 
                 backgroundColor: '#c9a15a', 
-                color: '#000', 
+                color: '#111', 
                 border: 'none', 
                 padding: '0.75rem 2rem', 
                 borderRadius: '6px',
@@ -206,55 +331,6 @@ export default function SettingsPage() {
                 Settings saved successfully!
               </span>
             )}
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label htmlFor="availableColors" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
-              Available Colors (Comma-separated)
-            </label>
-            <p style={{ color: 'rgba(245, 239, 230, 0.5)', fontSize: '0.8rem', margin: '0 0 0.5rem 0' }}>
-              These options will appear in the dropdown when adding a product.
-            </p>
-            <textarea 
-              id="availableColors"
-              value={availableColors}
-              onChange={(e) => setAvailableColors(e.target.value)}
-              placeholder="Peach, Maroon, Gold"
-              rows={3}
-              style={{ 
-                width: '100%', 
-                backgroundColor: 'rgba(0,0,0,0.3)', 
-                border: '1px solid rgba(255,255,255,0.1)', 
-                padding: '1rem', 
-                borderRadius: '6px',
-                color: '#fff',
-                fontFamily: 'inherit',
-                fontSize: '0.9rem'
-              }}
-            />
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label htmlFor="availableFabrics" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
-              Available Fabrics (Comma-separated)
-            </label>
-            <textarea 
-              id="availableFabrics"
-              value={availableFabrics}
-              onChange={(e) => setAvailableFabrics(e.target.value)}
-              placeholder="Silk, Velvet, Organza"
-              rows={2}
-              style={{ 
-                width: '100%', 
-                backgroundColor: 'rgba(0,0,0,0.3)', 
-                border: '1px solid rgba(255,255,255,0.1)', 
-                padding: '1rem', 
-                borderRadius: '6px',
-                color: '#fff',
-                fontFamily: 'inherit',
-                fontSize: '0.9rem'
-              }}
-            />
           </div>
 
         </form>
