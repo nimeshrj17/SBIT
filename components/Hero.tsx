@@ -57,28 +57,6 @@ export default function Hero() {
               EXPLORE COLLECTIONS <ArrowRight size={16} />
             </Link>
           </div>
-          
-          <div className={styles.features}>
-            <div className={styles.featureItem}>
-              <Globe size={28} className={styles.featureIcon} />
-              <span className={styles.featureText}><strong>20+ Countries</strong><br/>Exporting Worldwide</span>
-            </div>
-            <div className={styles.featureDivider}></div>
-            <div className={styles.featureItem}>
-              <Scissors size={28} className={styles.featureIcon} />
-              <span className={styles.featureText}><strong>Custom Designs</strong><br/>You Share. We Manufacture.</span>
-            </div>
-            <div className={styles.featureDivider}></div>
-            <div className={styles.featureItem}>
-              <ShieldCheck size={28} className={styles.featureIcon} />
-              <span className={styles.featureText}><strong>Premium Quality</strong><br/>Made With Attention to Detail</span>
-            </div>
-            <div className={styles.featureDivider}></div>
-            <div className={styles.featureItem}>
-              <Factory size={28} className={styles.featureIcon} />
-              <span className={styles.featureText}><strong>Direct Manufacturer</strong><br/>Competitive Factory Pricing</span>
-            </div>
-          </div>
         </div>
         
         <div className={styles.rightColumn}>

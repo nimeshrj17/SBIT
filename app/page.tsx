@@ -78,8 +78,8 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <Navbar />
-      <Hero />
       <CollectionsSection onAddToCart={handleAddToCart} />
+      <Hero />
       <Footer 
         whatsappNumber={whatsappNumber} 
         storeEmail={storeEmail}
