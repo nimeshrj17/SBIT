@@ -44,181 +44,74 @@ const DEFAULT_ITEMS: AccordionGalleryItem[] = [
 
 const AccordionGallery = ({
   items = DEFAULT_ITEMS,
-  defaultIndex = 2,
+  defaultIndex = 0,
   accentColor = '#ffffff',
   overlayColor = '#060010',
   textColor = '#ffffff',
   height = 460,
   gap = 10,
   radius = 16,
-  expandRatio = 0.52,
   orientation = 'horizontal',
-  duration = 0.6,
-  ease = 'power3.out',
-  parallax = 0.5,
-  tilt = 8,
-  stagger = 0.06,
-  trigger = 'hover',
   showLabels = true,
-  grayscale = true,
   className = ''
 }: AccordionGalleryProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
-  const mediaRefs = useRef<(HTMLElement | null)[]>([]);
-  const barRefs = useRef<(HTMLElement | null)[]>([]);
-  const textRefs = useRef<(HTMLElement | null)[]>([]);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const firstRunRef = useRef(true);
-  const mediaSizeRef = useRef(320);
-
+  
   const vertical = orientation === 'vertical';
   const count = items.length;
   const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1));
 
-  const prefersReduced =
-    typeof window !== 'undefined' && window.matchMedia
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false;
-
-  const applyLayout = useCallback(
-    (animate: boolean) => {
-      const panels = panelRefs.current;
-      if (!panels.length) return;
-
-      const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
-      const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
-      const mediaSize = mediaSizeRef.current;
-
-      tlRef.current?.kill();
-      const dur = animate && !prefersReduced ? duration : 0;
-      const tl = gsap.timeline();
-
-      panels.forEach((panel, i) => {
-        if (!panel) return;
-        const isActive = i === active;
-        const media = mediaRefs.current[i];
-        const bar = barRefs.current[i];
-        const text = textRefs.current[i];
-
-        const rot = isActive ? 0 : i < active ? tilt : -tilt;
-        const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot };
-
-        tl.to(panel, { flexGrow: isActive ? grow : 1, ...rotProp, duration: dur, ease }, 0);
-
-        if (media) {
-          const drift = Math.max(-1.5, Math.min(1.5, active - i));
-          const shift = drift * parallax * mediaSize * 0.06;
-          const gray = grayscale ? (isActive ? 0 : 1) : 0;
-          tl.to(
-            media,
-            {
-              xPercent: -50,
-              yPercent: -50,
-              x: vertical ? 0 : isActive ? 0 : shift,
-              y: vertical ? (isActive ? 0 : shift) : 0,
-              '--ag-gray': gray,
-              '--ag-dim': isActive ? 0 : 0.35,
-              duration: dur,
-              ease
-            },
-            0
-          );
-        }
-
-        if (showLabels && bar && text) {
-          if (isActive) {
-            tl.to([bar, text], { opacity: 1, x: 0, duration: dur, ease, stagger: prefersReduced ? 0 : stagger }, 0);
-          } else {
-            tl.to([bar, text], { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
-          }
-        }
-      });
-
-      tlRef.current = tl;
-    },
-    [
-      active,
-      count,
-      expandRatio,
-      duration,
-      ease,
-      vertical,
-      tilt,
-      parallax,
-      grayscale,
-      showLabels,
-      stagger,
-      prefersReduced
-    ]
-  );
-
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      const total = vertical ? rect.height : rect.width;
-      const usable = Math.max(total - gap * (count - 1), 120);
-      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22);
-      mediaSizeRef.current = size;
-      el.style.setProperty('--ag-media-size', `${size}px`);
-      applyLayout(!firstRunRef.current);
-    };
-
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [applyLayout, gap, count, expandRatio, vertical]);
-
-  useEffect(() => {
-    applyLayout(!firstRunRef.current);
-    
-    // Smooth scroll the native container to the active panel
-    if (rootRef.current) {
-      const activePanel = panelRefs.current[active];
-      if (activePanel) {
-        const container = rootRef.current;
-        const panelLeft = activePanel.offsetLeft;
-        const panelWidth = activePanel.offsetWidth;
-        const containerWidth = container.offsetWidth;
-        
-        container.scrollTo({
-          left: panelLeft - (containerWidth / 2) + (panelWidth / 2),
-          behavior: 'smooth'
-        });
-      }
-    }
-    
-    firstRunRef.current = false;
-  }, [applyLayout, active]);
-
-  useEffect(
-    () => () => {
-      tlRef.current?.kill();
-    },
-    []
-  );
-
   // Auto-scroll logic
   useEffect(() => {
     const timer = setInterval(() => {
-      setActive((prev) => (prev + 1) % count);
-    }, 4000); // Change slide every 4 seconds
+      if (count > 0 && rootRef.current) {
+        const nextIndex = (active + 1) % count;
+        const panel = panelRefs.current[nextIndex];
+        if (panel) {
+          rootRef.current.scrollTo({
+            left: panel.offsetLeft - (rootRef.current.offsetWidth / 2) + (panel.offsetWidth / 2),
+            behavior: 'smooth'
+          });
+        }
+      }
+    }, 4000);
 
     return () => clearInterval(timer);
-  }, [count]);
+  }, [count, active]);
 
-  const handleEnter = (i: number) => {
-    if (trigger === 'hover') setActive(i);
+  const handleScroll = () => {
+    if (!rootRef.current) return;
+    const container = rootRef.current;
+    const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+
+    let closestIndex = active;
+    let minDistance = Infinity;
+
+    panelRefs.current.forEach((panel, i) => {
+      if (!panel) return;
+      const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
+      const distance = Math.abs(containerCenter - panelCenter);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
+      }
+    });
+
+    if (closestIndex !== active) {
+      setActive(closestIndex);
+    }
   };
 
   const handleClick = (i: number, e: MouseEvent) => {
-    if (i !== active) {
-      e.preventDefault();
-      setActive(i);
+    e.preventDefault();
+    const panel = panelRefs.current[i];
+    if (panel && rootRef.current) {
+      rootRef.current.scrollTo({
+        left: panel.offsetLeft - (rootRef.current.offsetWidth / 2) + (panel.offsetWidth / 2),
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -248,6 +141,7 @@ const AccordionGallery = ({
       style={rootStyle}
       role="list"
       aria-label="Image accordion gallery"
+      onScroll={handleScroll}
     >
       {items.map((item, i) => {
         const isActive = i === active;
@@ -262,8 +156,6 @@ const AccordionGallery = ({
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={e => handleClick(i, e)}
-            onMouseEnter={() => handleEnter(i)}
-            onFocus={() => setActive(i)}
             onKeyDown={e => handleKeyDown(i, e)}
             role="listitem"
             tabIndex={0}
