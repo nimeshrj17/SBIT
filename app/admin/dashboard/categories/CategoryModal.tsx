@@ -111,11 +111,6 @@ export default function CategoryModal({ isOpen, onClose, categoryToEdit, onSaved
               <label htmlFor="name">Category Name</label>
               <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
             </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="slug">Slug (URL)</label>
-              <input type="text" id="slug" name="slug" value={formData.slug} onChange={handleChange} required />
-            </div>
           </div>
           
           <div className={styles.formGroup}>
