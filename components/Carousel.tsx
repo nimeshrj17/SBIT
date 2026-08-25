@@ -22,14 +22,14 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
   const touchEndX = useRef(0);
 
   useEffect(() => {
-    if (items.length <= 1 || isHovered) return;
+    if (items.length <= 1) return;
     
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % items.length);
     }, autoPlayInterval);
     
     return () => clearInterval(timer);
-  }, [items.length, autoPlayInterval, isHovered]);
+  }, [items.length, autoPlayInterval]);
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
@@ -61,8 +61,6 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
   return (
     <div 
       className={styles.carouselContainer}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
