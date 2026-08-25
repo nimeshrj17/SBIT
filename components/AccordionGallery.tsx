@@ -61,36 +61,34 @@ const AccordionGallery = ({
   const vertical = orientation === 'vertical';
   const count = items.length;
   const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1));
+  const [isHovered, setIsHovered] = useState(false);
 
   // Auto-scroll logic
   useEffect(() => {
+    if (isHovered) return;
     const timer = setInterval(() => {
-      if (count > 0 && rootRef.current) {
-        const nextIndex = (active + 1) % count;
-        const panel = panelRefs.current[nextIndex];
-        if (panel) {
-          rootRef.current.scrollTo({
-            left: panel.offsetLeft - (rootRef.current.offsetWidth / 2) + (panel.offsetWidth / 2),
-            behavior: 'smooth'
-          });
-        }
+      if (count > 0) {
+        setActive((prev) => (prev + 1) % count);
       }
-    }, 4000);
+    }, 1500);
 
     return () => clearInterval(timer);
-  }, [count, active]);
+  }, [count, isHovered]);
 
-  // handleScroll removed
-
-  const handleClick = (i: number, e: MouseEvent) => {
-    e.preventDefault();
-    const panel = panelRefs.current[i];
+  // Sync scroll to active item
+  useEffect(() => {
+    const panel = panelRefs.current[active];
     if (panel && rootRef.current) {
       rootRef.current.scrollTo({
         left: panel.offsetLeft - (rootRef.current.offsetWidth / 2) + (panel.offsetWidth / 2),
         behavior: 'smooth'
       });
     }
+  }, [active]);
+
+  const handleClick = (i: number, e: MouseEvent) => {
+    e.preventDefault();
+    setActive(i);
   };
 
   const handleKeyDown = (i: number, e: KeyboardEvent) => {
@@ -119,6 +117,8 @@ const AccordionGallery = ({
       style={rootStyle}
       role="list"
       aria-label="Image accordion gallery"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {items.map((item, i) => {
         const isActive = i === active;
@@ -133,6 +133,7 @@ const AccordionGallery = ({
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={e => handleClick(i, e)}
+            onMouseEnter={() => setActive(i)}
             onKeyDown={e => handleKeyDown(i, e)}
             role="listitem"
             tabIndex={0}
