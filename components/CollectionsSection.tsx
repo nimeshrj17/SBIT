@@ -25,6 +25,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
   
   const [priceFilterInterval, setPriceFilterInterval] = useState(4000);
+  const [enablePriceRange, setEnablePriceRange] = useState(true);
   const [priceBuckets, setPriceBuckets] = useState<string[]>(["All Prices"]);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
   const [availableFabrics, setAvailableFabrics] = useState<string[]>([]);
@@ -53,10 +54,18 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   useEffect(() => {
     const fetchLiveData = async () => {
       setLoading(true);
-      const [prods, cats, intervalStr] = await Promise.all([getProducts(), getCategories(), getSetting("priceFilterInterval")]);
+      const [prods, cats, intervalStr, enablePrice] = await Promise.all([
+        getProducts(), 
+        getCategories(), 
+        getSetting("priceFilterInterval"),
+        getSetting("enablePriceRange")
+      ]);
       
       const interval = intervalStr ? parseInt(intervalStr, 10) : 4000;
       setPriceFilterInterval(interval);
+      if (enablePrice !== null) {
+        setEnablePriceRange(enablePrice === "true");
+      }
       
       let maxPrice = 0;
       prods.forEach(p => { if (p.price > maxPrice) maxPrice = p.price; });
@@ -184,15 +193,17 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
               ))}
             </div>
             
-            <div className={styles.filterGroup}>
-              <h4 className={styles.filterHeader}>Price Range <span className={styles.minus}>&minus;</span></h4>
-              {priceBuckets.map((bucket, idx) => (
-                <label key={idx} className={styles.radioLabel}>
-                  <input type="radio" name="price" checked={selectedPrice === bucket} onChange={() => setSelectedPrice(bucket)} />
-                  <span className={styles.radioText}>{bucket}</span>
-                </label>
-              ))}
-            </div>
+            {enablePriceRange && (
+              <div className={styles.filterGroup}>
+                <h4 className={styles.filterHeader}>Price Range <span className={styles.minus}>&minus;</span></h4>
+                {priceBuckets.map((bucket, idx) => (
+                  <label key={idx} className={styles.radioLabel}>
+                    <input type="radio" name="price" checked={selectedPrice === bucket} onChange={() => setSelectedPrice(bucket)} />
+                    <span className={styles.radioText}>{bucket}</span>
+                  </label>
+                ))}
+              </div>
+            )}
             
             <div className={styles.filterGroup}>
               <h4 className={styles.filterHeader}>Color <span className={styles.minus}>&minus;</span></h4>

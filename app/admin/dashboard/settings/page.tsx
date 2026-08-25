@@ -10,6 +10,7 @@ export default function SettingsPage() {
   const [storeEmail, setStoreEmail] = useState("");
   const [storeAddress, setStoreAddress] = useState("");
   const [priceFilterInterval, setPriceFilterInterval] = useState("4000");
+  const [enablePriceRange, setEnablePriceRange] = useState(true);
   const [availableColors, setAvailableColors] = useState("Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani");
   const [availableFabrics, setAvailableFabrics] = useState("Silk, Georgette, Velvet, Net, Crepe, Organza");
   const [isSaving, setIsSaving] = useState(false);
@@ -25,6 +26,8 @@ export default function SettingsPage() {
       if (address) setStoreAddress(address);
       const interval = await getSetting("priceFilterInterval");
       if (interval) setPriceFilterInterval(interval);
+      const enablePrice = await getSetting("enablePriceRange");
+      if (enablePrice !== null) setEnablePriceRange(enablePrice === "true");
       const colors = await getSetting("availableColors");
       if (colors) setAvailableColors(colors);
       const fabrics = await getSetting("availableFabrics");
@@ -43,6 +46,7 @@ export default function SettingsPage() {
       await setSetting("storeEmail", storeEmail);
       await setSetting("storeAddress", storeAddress);
       await setSetting("priceFilterInterval", priceFilterInterval);
+      await setSetting("enablePriceRange", enablePriceRange.toString());
       await setSetting("availableColors", availableColors);
       await setSetting("availableFabrics", availableFabrics);
       setSaveSuccess(true);
@@ -129,6 +133,19 @@ export default function SettingsPage() {
               }}
               required
             />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+            <input 
+              type="checkbox" 
+              id="enablePriceRange"
+              checked={enablePriceRange}
+              onChange={(e) => setEnablePriceRange(e.target.checked)}
+              style={{ width: '1.2rem', height: '1.2rem', cursor: 'pointer' }}
+            />
+            <label htmlFor="enablePriceRange" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem', cursor: 'pointer' }}>
+              Enable Price Range filter and inputs for products
+            </label>
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>

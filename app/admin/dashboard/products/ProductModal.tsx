@@ -33,20 +33,25 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const [colorInput, setColorInput] = useState("");
 
   const [priceInterval, setPriceInterval] = useState(4000);
+  const [enablePriceRange, setEnablePriceRange] = useState(true);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
   const [availableFabrics, setAvailableFabrics] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCatsAndSettings = async () => {
-      const [cats, intervalStr, colorsStr, fabricsStr] = await Promise.all([
+      const [cats, intervalStr, colorsStr, fabricsStr, enablePrice] = await Promise.all([
         getCategories(), 
         getSetting("priceFilterInterval"),
         getSetting("availableColors"),
-        getSetting("availableFabrics")
+        getSetting("availableFabrics"),
+        getSetting("enablePriceRange")
       ]);
       setCategories(cats);
       if (intervalStr) {
         setPriceInterval(parseInt(intervalStr, 10));
+      }
+      if (enablePrice !== null) {
+        setEnablePriceRange(enablePrice === "true");
       }
       
       const defaultColors = "Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani";
@@ -181,28 +186,30 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           </div>
           
           <div className={styles.row}>
-            <div className={styles.formGroup}>
-              <label htmlFor="price">Price Range</label>
-              <select 
-                id="price" 
-                name="price" 
-                value={formData.price} 
-                onChange={handleChange}
-                style={{ width: '100%', padding: '0.75rem', backgroundColor: '#222', border: '1px solid #444', borderRadius: '4px', color: '#fff', fontSize: '1rem' }}
-                required
-              >
-                <option value={0} disabled>Select a price range</option>
-                {Array.from({ length: 20 }).map((_, i) => {
-                  const lower = (i * priceInterval) + 1; // e.g. 1
-                  const upper = (i + 1) * priceInterval; // e.g. 4000
-                  return (
-                    <option key={i} value={lower}>
-                      ₹{lower.toLocaleString('en-IN')} - ₹{upper.toLocaleString('en-IN')}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+            {enablePriceRange && (
+              <div className={styles.formGroup}>
+                <label htmlFor="price">Price Range</label>
+                <select 
+                  id="price" 
+                  name="price" 
+                  value={formData.price} 
+                  onChange={handleChange}
+                  style={{ width: '100%', padding: '0.75rem', backgroundColor: '#222', border: '1px solid #444', borderRadius: '4px', color: '#fff', fontSize: '1rem' }}
+                  required
+                >
+                  <option value={0} disabled>Select a price range</option>
+                  {Array.from({ length: 20 }).map((_, i) => {
+                    const lower = (i * priceInterval) + 1; // e.g. 1
+                    const upper = (i + 1) * priceInterval; // e.g. 4000
+                    return (
+                      <option key={i} value={lower}>
+                        ₹{lower.toLocaleString('en-IN')} - ₹{upper.toLocaleString('en-IN')}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
             
             <div className={styles.formGroup}>
               <label>Categories (Select Multiple)</label>

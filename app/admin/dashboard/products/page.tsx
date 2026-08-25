@@ -15,13 +15,21 @@ export default function AdminDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>(undefined);
   const [priceInterval, setPriceInterval] = useState(4000);
+  const [enablePriceRange, setEnablePriceRange] = useState(true);
 
   const fetchProducts = async () => {
     setLoading(true);
-    const [data, intervalStr] = await Promise.all([getProducts(), getSetting("priceFilterInterval")]);
+    const [data, intervalStr, enablePrice] = await Promise.all([
+      getProducts(), 
+      getSetting("priceFilterInterval"),
+      getSetting("enablePriceRange")
+    ]);
     setProducts(data);
     if (intervalStr) {
       setPriceInterval(parseInt(intervalStr, 10));
+    }
+    if (enablePrice !== null) {
+      setEnablePriceRange(enablePrice === "true");
     }
     setLoading(false);
   };
@@ -88,7 +96,7 @@ export default function AdminDashboard() {
             <tr>
               <th>Product</th>
               <th>Category</th>
-              <th>Price</th>
+              {enablePriceRange && <th>Price</th>}
               <th className={styles.actionsCol}>Actions</th>
             </tr>
           </thead>
@@ -129,11 +137,13 @@ export default function AdminDashboard() {
                   <td>
                     <span className={styles.categoryBadge}>{(product.categories || []).join(", ")}</span>
                   </td>
-                  <td>
-                    <span className={styles.priceText}>
-                      ₹{product.price.toLocaleString('en-IN')} - ₹{(product.price + priceInterval - 1).toLocaleString('en-IN')}
-                    </span>
-                  </td>
+                  {enablePriceRange && (
+                    <td>
+                      <span className={styles.priceText}>
+                        ₹{product.price.toLocaleString('en-IN')} - ₹{(product.price + priceInterval - 1).toLocaleString('en-IN')}
+                      </span>
+                    </td>
+                  )}
                   <td className={styles.actionsCol}>
                     <button onClick={() => handleEdit(product)} className={styles.actionBtn} aria-label="Edit">
                       <Edit2 size={16} />
