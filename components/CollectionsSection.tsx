@@ -31,7 +31,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   const [whatsappNumber, setWhatsappNumber] = useState<string>("");
   
   const filteredProducts = products.filter(p => {
-    if (selectedCategory !== "all" && p.category !== selectedCategory) return false;
+    if (selectedCategory !== "all" && !(p.categories || []).includes(selectedCategory)) return false;
     if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     
     if (selectedPrice !== "All Prices") {
@@ -108,14 +108,21 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         
         {/* Accordion Gallery Showcase */}
         <div style={{ height: '400px', width: '100%', marginBottom: '4rem' }}>
-          {categories.length > 1 && (
+          {(categories.length > 1 || products.length > 0) && (
             <AccordionGallery
-              items={categories.filter(c => c.slug !== "all").map(c => ({
-                image: c.image || "https://picsum.photos/800/800",
-                label: c.name,
-                alt: c.name
-              }))}
-              defaultIndex={Math.floor(categories.filter(c => c.slug !== "all").length / 2) || 0}
+              items={[
+                ...categories.filter(c => c.slug !== "all").map(c => ({
+                  image: c.image || "https://picsum.photos/800/800",
+                  label: c.name,
+                  alt: c.name
+                })),
+                ...products.filter(p => p.isPopular || p.isBestSeller).map(p => ({
+                  image: p.image,
+                  label: `${p.title} ${p.isBestSeller ? '(Best Seller)' : '(Popular)'}`,
+                  alt: p.title
+                }))
+              ]}
+              defaultIndex={0}
             expandRatio={0.52}
             trigger="hover"
             accentColor="#c9a15a"
@@ -181,7 +188,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                   />
                   <span className={styles.radioText}>
                     {cat.name} 
-                    {cat.slug !== "all" && ` (${products.filter(p => p.category === cat.slug).length})`}
+                    {cat.slug !== "all" && ` (${products.filter(p => (p.categories || []).includes(cat.slug)).length})`}
                   </span>
                 </label>
               ))}
@@ -291,6 +298,8 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                     productCode={product.productCode || product.id}
                     price={product.price}
                     isNew={product.isNew}
+                    isPopular={product.isPopular}
+                    isBestSeller={product.isBestSeller}
                     colors={product.colors}
                     extraColorsCount={product.extraColorsCount}
                     onAddToCart={() => onAddToCart && onAddToCart(product)}

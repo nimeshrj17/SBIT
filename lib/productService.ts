@@ -19,9 +19,11 @@ export interface Product {
   title: string;
   price: number;
   image: string;
-  category: string;
+  categories: string[];
   fabric?: string;
   isNew: boolean;
+  isPopular?: boolean;
+  isBestSeller?: boolean;
   colors: string[];
   extraColorsCount: number;
   createdAt?: number;
@@ -35,9 +37,11 @@ let mockProducts: Product[] = [
     title: "Royal Maroon Bridal Lehenga",
     price: 18500,
     image: "/collections/bridal.jpg",
-    category: "bridal",
+    categories: ["bridal", "high-range"],
     fabric: "Silk",
     isNew: true,
+    isPopular: true,
+    isBestSeller: false,
     colors: ["#5e1b20", "#c23a2a"],
     extraColorsCount: 0,
     createdAt: Date.now()
@@ -48,9 +52,11 @@ let mockProducts: Product[] = [
     title: "Pastel Pink Party Wear Lehenga",
     price: 8500,
     image: "/collections/fusion.jpg",
-    category: "party-wear",
+    categories: ["party-wear", "mid-range"],
     fabric: "Georgette",
     isNew: false,
+    isPopular: false,
+    isBestSeller: true,
     colors: ["#ffc0cb", "#ffd1dc"],
     extraColorsCount: 0,
     createdAt: Date.now() - 1000

@@ -9,6 +9,8 @@ interface ProductCardProps {
   productCode?: string;
   price: number;
   isNew?: boolean;
+  isPopular?: boolean;
+  isBestSeller?: boolean;
   colors?: string[];
   extraColorsCount?: number;
   onAddToCart?: () => void;
@@ -21,6 +23,8 @@ export default function ProductCard({
   productCode,
   price,
   isNew = false,
+  isPopular = false,
+  isBestSeller = false,
   colors = [],
   extraColorsCount = 0,
   onAddToCart,
@@ -43,7 +47,11 @@ export default function ProductCard({
           loading="lazy"
           className={styles.image} 
         />
-        {isNew && <div className={styles.badge}>NEW</div>}
+        <div className={styles.badges}>
+          {isNew && <div className={styles.badge}>NEW</div>}
+          {isPopular && <div className={styles.badgePopular}>POPULAR</div>}
+          {isBestSeller && <div className={styles.badgeBestSeller}>BEST SELLER</div>}
+        </div>
       </div>
       
       <div className={styles.content}>

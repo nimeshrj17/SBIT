@@ -28,10 +28,17 @@
   transform: scale(1.05);
 }
 
-.badge {
+.badges {
   position: absolute;
   bottom: 12px;
   left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.badge {
   background-color: rgba(20, 5, 10, 0.7);
   color: #c9a15a;
   font-size: 0.65rem;
@@ -40,6 +47,26 @@
   border-radius: 4px;
   letter-spacing: 0.05em;
   border: 1px solid rgba(201, 161, 90, 0.3);
+}
+
+.badgePopular {
+  background-color: rgba(201, 161, 90, 0.9);
+  color: #14050a;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.badgeBestSeller {
+  background-color: rgba(184, 40, 50, 0.9);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
 }
 
 .wishlistBtn {

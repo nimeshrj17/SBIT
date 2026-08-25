@@ -176,8 +176,8 @@ const AccordionGallery = ({
   useEffect(() => {
     applyLayout(!firstRunRef.current);
     
-    // Smooth scroll the native container to the active panel on mobile
-    if (window.innerWidth <= 768 && rootRef.current) {
+    // Smooth scroll the native container to the active panel
+    if (rootRef.current) {
       const activePanel = panelRefs.current[active];
       if (activePanel) {
         const container = rootRef.current;

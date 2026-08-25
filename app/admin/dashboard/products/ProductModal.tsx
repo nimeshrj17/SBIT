@@ -15,23 +15,17 @@ const emptyProduct: Omit<Product, "id"> = {
   title: "",
   price: 0,
   image: "",
-  category: "",
+  category: "", // keeping for backwards compatibility if needed
+  categories: [],
   fabric: "",
   isNew: false,
+  isPopular: false,
+  isBestSeller: false,
   colors: [],
   extraColorsCount: 0
 };
 
-const FABRICS = [
-  "Silk",
-  "Georgette",
-  "Net",
-  "Velvet",
-  "Organza",
-  "Crepe",
-  "Cotton",
-  "Chiffon"
-];
+
 
 export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }: ProductModalProps) {
   const [formData, setFormData] = useState<Omit<Product, "id">>(emptyProduct);
@@ -60,13 +54,22 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
-    if (type === "checkbox") {
-      setFormData(prev => ({ ...prev, [name]: (e.target as HTMLInputElement).checked }));
-    } else if (name === "price" || name === "extraColorsCount") {
-      setFormData(prev => ({ ...prev, [name]: Number(value) }));
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      
+      // Handle array of categories via checkboxes
+      if (name === 'categories') {
+        setFormData(prev => {
+          const newCategories = checked 
+            ? [...(prev.categories || []), value]
+            : (prev.categories || []).filter(c => c !== value);
+          return { ...prev, categories: newCategories };
+        });
+      } else {
+        setFormData(prev => ({ ...prev, [name]: checked }));
+      }
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData(prev => ({ ...prev, [name]: name === "price" || name === "extraColorsCount" ? Number(value) : value }));
     }
   };
 
@@ -142,25 +145,35 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
             </div>
             
             <div className={styles.formGroup}>
-              <label htmlFor="category">Category</label>
-              <select id="category" name="category" value={formData.category} onChange={handleChange}>
-                <option value="">Select a category</option>
+              <label>Categories (Select Multiple)</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
                 {categories.map(cat => (
-                  <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                  <label key={cat.id} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#fff', fontSize: '0.9rem' }}>
+                    <input 
+                      type="checkbox" 
+                      name="categories" 
+                      value={cat.slug} 
+                      checked={(formData.categories || []).includes(cat.slug)}
+                      onChange={handleChange}
+                    />
+                    {cat.name}
+                  </label>
                 ))}
-              </select>
+              </div>
             </div>
           </div>
 
           <div className={styles.row}>
             <div className={styles.formGroup}>
               <label htmlFor="fabric">Fabric</label>
-              <select id="fabric" name="fabric" value={formData.fabric || ""} onChange={handleChange}>
-                <option value="">Select a fabric</option>
-                {FABRICS.map(fabric => (
-                  <option key={fabric} value={fabric}>{fabric}</option>
-                ))}
-              </select>
+              <input 
+                type="text" 
+                id="fabric" 
+                name="fabric" 
+                value={formData.fabric || ""} 
+                onChange={handleChange} 
+                placeholder="e.g. Silk, Velvet" 
+              />
             </div>
             
             <div className={styles.formGroup}>
@@ -202,10 +215,18 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
               <input type="number" id="extraColorsCount" name="extraColorsCount" value={formData.extraColorsCount} onChange={handleChange} min="0" />
             </div>
             
-            <div className={styles.formGroupCheckbox}>
+            <div className={styles.formGroupCheckbox} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label>
                 <input type="checkbox" name="isNew" checked={formData.isNew} onChange={handleChange} />
                 <span>Mark as "NEW" Collection</span>
+              </label>
+              <label>
+                <input type="checkbox" name="isPopular" checked={formData.isPopular || false} onChange={handleChange} />
+                <span>Mark as "POPULAR"</span>
+              </label>
+              <label>
+                <input type="checkbox" name="isBestSeller" checked={formData.isBestSeller || false} onChange={handleChange} />
+                <span>Mark as "BEST SELLER"</span>
               </label>
             </div>
           </div>
