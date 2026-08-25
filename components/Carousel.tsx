@@ -115,17 +115,6 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
           <button className={`${styles.navButton} ${styles.nextButton}`} onClick={goToNext}>
             <ChevronRight size={24} />
           </button>
-          
-          <div className={styles.indicators}>
-            {items.map((_, idx) => (
-              <button 
-                key={idx} 
-                className={`${styles.indicatorDot} ${idx === currentIndex ? styles.activeDot : ''}`}
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
         </>
       )}
     </div>
