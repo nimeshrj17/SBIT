@@ -95,9 +95,6 @@ export default function Hero() {
                   className={styles.heroCarouselImage}
                   priority={idx === 0}
                 />
-                <div className={styles.heroCarouselCaption}>
-                  <span>{cat.name}</span>
-                </div>
               </div>
             ))}
           </div>
