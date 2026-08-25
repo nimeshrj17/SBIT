@@ -78,7 +78,7 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
           let className = styles.carouselSlide;
           let inlineStyle: React.CSSProperties = {
             zIndex: 10 - Math.abs(offset),
-            transform: `translateX(${offset * 50}%) scale(${1 - Math.abs(offset) * 0.15})`,
+            transform: `translateX(${offset * 120}%) scale(${1 - Math.abs(offset) * 0.15})`,
             opacity: Math.abs(offset) >= 3 ? 0 : 1,
             pointerEvents: offset === 0 ? 'auto' : 'none',
           };
