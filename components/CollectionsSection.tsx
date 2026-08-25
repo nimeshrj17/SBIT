@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./CollectionsSection.module.css";
 import ProductCard from "./ProductCard";
-import AccordionGallery from "./AccordionGallery";
+import Carousel from "./Carousel";
 import { Filter, Search, ChevronDown, ChevronRight, Flower } from "lucide-react";
 import Link from "next/link";
 import { getProducts, getCategories, getSetting, Product, Category } from "@/lib/productService";
@@ -109,7 +109,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         {/* Accordion Gallery Showcase */}
         <div style={{ height: '400px', width: '100%', marginBottom: '4rem' }}>
           {(categories.length > 1 || products.length > 0) && (
-            <AccordionGallery
+            <Carousel
               items={[
                 ...categories.filter(c => c.slug !== "all").map(c => ({
                   image: c.image || "https://picsum.photos/800/800",
@@ -122,24 +122,8 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                   alt: p.title
                 }))
               ]}
-              defaultIndex={0}
-            expandRatio={0.52}
-            trigger="hover"
-            accentColor="#c9a15a"
-            overlayColor="#1f1113"
-            textColor="#ffffff"
-            grayscale={false}
-            showLabels={true}
-            duration={0.6}
-            ease="power3.out"
-            parallax={0.5}
-            tilt={8}
-            stagger={0.06}
-            height={400}
-            gap={10}
-            radius={8}
-            orientation="horizontal"
-          />
+              autoPlayInterval={4000}
+            />
           )}
         </div>
         
