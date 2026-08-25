@@ -6,6 +6,7 @@ import FilterBar from "@/components/FilterBar";
 import CartTray from "@/components/CartTray";
 import styles from "./page.module.css";
 import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -39,6 +40,14 @@ export default function Home() {
   const [storeEmail, setStoreEmail] = useState("contact@houseofshri.com");
   const [storeAddress, setStoreAddress] = useState("Surat, Gujarat, India");
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    // If no specific hash is provided, default to scrolling to collections
+    if (typeof window !== "undefined" && !window.location.hash) {
+      router.replace('/#collections');
+    }
+  }, [router]);
 
   useEffect(() => {
     import('@/lib/productService').then(({ getSetting }) => {
@@ -78,8 +87,8 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <Navbar />
-      <CollectionsSection onAddToCart={handleAddToCart} />
       <Hero />
+      <CollectionsSection onAddToCart={handleAddToCart} />
       <Footer 
         whatsappNumber={whatsappNumber} 
         storeEmail={storeEmail}
