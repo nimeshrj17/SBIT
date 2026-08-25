@@ -17,11 +17,10 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState<string>("₹4,000 - ₹8,000");
+  const [selectedPrice, setSelectedPrice] = useState<string>("All Prices");
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
   
@@ -103,16 +102,6 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
     fetchLiveData();
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target as Element).closest(`.${styles.filterDropdownContainer}`)) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   return (
@@ -169,164 +158,114 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         {/* Main Layout Grid */}
         <div className={styles.mainLayout}>
           
-          {/* Sticky Horizontal Filter Bar */}
-          <div className={styles.horizontalFilterBar}>
-            <div className={styles.filterBarInner}>
-              <div className={styles.filterDropdowns}>
-                {/* Categories Dropdown */}
-                <div className={styles.filterDropdownContainer}>
-                  <button 
-                    className={styles.dropdownTrigger}
-                    onClick={() => setOpenDropdown(openDropdown === 'category' ? null : 'category')}
-                  >
-                    Category: {categories.find(c => c.slug === selectedCategory)?.name || "All"} <ChevronDown size={14} />
-                  </button>
-                  {openDropdown === 'category' && (
-                    <div className={styles.dropdownMenu}>
-                      {categories.map((cat, idx) => (
-                        <label key={cat.id} className={styles.dropdownItem}>
-                          <input 
-                            type="radio" 
-                            name="category" 
-                            checked={selectedCategory === cat.slug}
-                            onChange={() => {
-                              setSelectedCategory(cat.slug);
-                              setOpenDropdown(null);
-                            }}
-                          />
-                          <span>
-                            {cat.name} 
-                            {cat.slug !== "all" && ` (${products.filter(p => (p.categories || []).includes(cat.slug)).length})`}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Price Dropdown */}
-                {enablePriceRange && (
-                  <div className={styles.filterDropdownContainer}>
-                    <button 
-                      className={styles.dropdownTrigger}
-                      onClick={() => setOpenDropdown(openDropdown === 'price' ? null : 'price')}
-                    >
-                      Price: {selectedPrice} <ChevronDown size={14} />
-                    </button>
-                    {openDropdown === 'price' && (
-                      <div className={styles.dropdownMenu}>
-                        {priceBuckets.map((bucket, idx) => (
-                          <label key={idx} className={styles.dropdownItem}>
-                            <input 
-                              type="radio" 
-                              name="price" 
-                              checked={selectedPrice === bucket} 
-                              onChange={() => {
-                                setSelectedPrice(bucket);
-                                setOpenDropdown(null);
-                              }} 
-                            />
-                            <span>{bucket}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Color Dropdown */}
-                <div className={styles.filterDropdownContainer}>
-                  <button 
-                    className={styles.dropdownTrigger}
-                    onClick={() => setOpenDropdown(openDropdown === 'color' ? null : 'color')}
-                  >
-                    Color: {selectedColor || "Any"} <ChevronDown size={14} />
-                  </button>
-                  {openDropdown === 'color' && (
-                    <div className={styles.dropdownMenu}>
-                      <div className={styles.colorFilters}>
-                        {availableColors.map(color => {
-                          const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
-                          return (
-                            <span 
-                              key={color}
-                              onClick={() => {
-                                setSelectedColor(selectedColor === color ? null : color);
-                                setOpenDropdown(null);
-                              }}
-                              style={{ 
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                fontSize: '0.8rem', 
-                                backgroundColor: selectedColor === color ? '#c9a15a' : '#222', 
-                                color: selectedColor === color ? '#000' : '#fff',
-                                padding: '4px 10px', 
-                                borderRadius: '4px', 
-                                cursor: 'pointer',
-                                border: selectedColor === color ? '1px solid #c9a15a' : '1px solid #444',
-                                transition: 'all 0.2s ease'
-                              }}
-                            >
-                              {hex !== 'transparent' && <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: hex }}></span>}
-                              {name}
-                            </span>
-                          );
-                        })}
-                        {availableColors.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No colors</span>}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Fabric Dropdown */}
-                <div className={styles.filterDropdownContainer}>
-                  <button 
-                    className={styles.dropdownTrigger}
-                    onClick={() => setOpenDropdown(openDropdown === 'fabric' ? null : 'fabric')}
-                  >
-                    Fabric: {selectedFabric || "Any"} <ChevronDown size={14} />
-                  </button>
-                  {openDropdown === 'fabric' && (
-                    <div className={styles.dropdownMenu}>
-                      {availableFabrics.map(fabric => (
-                        <label key={fabric} className={styles.dropdownItem}>
-                          <input 
-                            type="radio" 
-                            name="fabric" 
-                            checked={selectedFabric === fabric} 
-                            onChange={() => {
-                              setSelectedFabric(selectedFabric === fabric ? null : fabric);
-                              setOpenDropdown(null);
-                            }} 
-                            onClick={(e) => {
-                              if (selectedFabric === fabric) {
-                                e.preventDefault();
-                                setSelectedFabric(null);
-                                setOpenDropdown(null);
-                              }
-                            }}
-                          />
-                          <span>{fabric}</span>
-                        </label>
-                      ))}
-                      {availableFabrics.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', padding: '0.5rem'}}>No fabrics</span>}
-                    </div>
-                  )}
+          {/* Sidebar Drawer on Mobile / Fixed on Desktop */}
+          <div className={`${styles.sidebarWrapper} ${isMobileFiltersOpen ? styles.sidebarOpen : ''}`}>
+            <div className={styles.sidebarOverlay} onClick={() => setIsMobileFiltersOpen(false)} />
+            <aside className={styles.sidebar}>
+              <div className={styles.sidebarHeader}>
+                <h3 className={styles.sidebarTitle}><Filter size={16} /> Filters</h3>
+                <div className={styles.sidebarHeaderActions}>
+                  <button className={styles.resetBtn} onClick={() => {
+                    setSelectedCategory("all");
+                    setSearchQuery("");
+                    setSelectedPrice("All Prices");
+                    setSelectedColor(null);
+                    setSelectedFabric(null);
+                  }}>Reset</button>
+                  <button className={styles.closeFiltersBtn} onClick={() => setIsMobileFiltersOpen(false)}>×</button>
                 </div>
               </div>
-              
-              {/* Reset Button */}
-              <button className={styles.resetBtnHorizontal} onClick={() => {
-                setSelectedCategory("all");
-                setSearchQuery("");
-                setSelectedPrice("All Prices");
-                setSelectedColor(null);
-                setSelectedFabric(null);
-              }}>
-                <Filter size={14} /> Reset Filters
-              </button>
+            
+            {/* Filter Groups */}
+            <div className={styles.filterGroup}>
+              <h4 className={styles.filterHeader}>Categories <span className={styles.minus}>&minus;</span></h4>
+              {categories.map((cat, idx) => (
+                <label key={cat.id} className={styles.radioLabel}>
+                  <input 
+                    type="radio" 
+                    name="category" 
+                    checked={selectedCategory === cat.slug}
+                    onChange={() => setSelectedCategory(cat.slug)}
+                  />
+                  <span className={styles.radioText}>
+                    {cat.name} 
+                    {cat.slug !== "all" && ` (${products.filter(p => (p.categories || []).includes(cat.slug)).length})`}
+                  </span>
+                </label>
+              ))}
             </div>
+            
+            {enablePriceRange && (
+              <div className={styles.filterGroup}>
+                <h4 className={styles.filterHeader}>Price Range <span className={styles.minus}>&minus;</span></h4>
+                {priceBuckets.map((bucket, idx) => (
+                  <label key={idx} className={styles.radioLabel}>
+                    <input type="radio" name="price" checked={selectedPrice === bucket} onChange={() => setSelectedPrice(bucket)} />
+                    <span className={styles.radioText}>{bucket}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+            
+            <div className={styles.filterGroup}>
+              <h4 className={styles.filterHeader}>Color <span className={styles.minus}>&minus;</span></h4>
+              <div className={styles.colorFilters}>
+                {availableColors.map(color => {
+                  const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
+                  return (
+                    <span 
+                      key={color}
+                      onClick={() => setSelectedColor(selectedColor === color ? null : color)}
+                      style={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '0.8rem', 
+                        backgroundColor: selectedColor === color ? '#c9a15a' : '#222', 
+                        color: selectedColor === color ? '#000' : '#fff',
+                        padding: '4px 10px', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer',
+                        border: selectedColor === color ? '1px solid #c9a15a' : '1px solid #444',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      {hex !== 'transparent' && <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: hex }}></span>}
+                      {name}
+                    </span>
+                  );
+                })}
+                {availableColors.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No colors</span>}
+              </div>
+            </div>
+            
+            <div className={styles.filterGroup}>
+              <h4 className={styles.filterHeader}>Fabric <span className={styles.plus}>+</span></h4>
+              {availableFabrics.map(fabric => (
+                <label key={fabric} className={styles.radioLabel}>
+                  <input 
+                    type="radio" 
+                    name="fabric" 
+                    checked={selectedFabric === fabric} 
+                    onChange={() => setSelectedFabric(selectedFabric === fabric ? null : fabric)} 
+                    onClick={(e) => {
+                      if (selectedFabric === fabric) {
+                        e.preventDefault();
+                        setSelectedFabric(null);
+                      }
+                    }}
+                  />
+                  <span className={styles.radioText}>{fabric}</span>
+                </label>
+              ))}
+              {availableFabrics.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No fabrics</span>}
+            </div>
+            
+            <div className={styles.filterGroup}>
+              <h4 className={styles.filterHeader}>Availability <span className={styles.plus}>+</span></h4>
+            </div>
+            
+            </aside>
           </div>
           
           {/* Product Grid Area */}
@@ -334,6 +273,9 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
             
             {/* Top Bar */}
             <div className={styles.productsTopBar}>
+              <button className={styles.mobileFilterBtn} onClick={() => setIsMobileFiltersOpen(true)}>
+                <Filter size={16} /> Filters
+              </button>
               <span className={styles.showingText}>Showing {filteredProducts.length} of {products.length} products</span>
               
               <div className={styles.topBarControls}>
