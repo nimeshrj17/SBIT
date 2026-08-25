@@ -200,14 +200,20 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {availableColors.map(color => (
                   <span 
                     key={color}
-                    className={styles.colorFilter} 
-                    title={color}
-                    style={{ 
-                      backgroundColor: color, 
-                      border: selectedColor === color ? '2px solid #c9a15a' : '2px solid rgba(255,255,255,0.2)'
-                    }}
                     onClick={() => setSelectedColor(selectedColor === color ? null : color)}
-                  />
+                    style={{ 
+                      fontSize: '0.8rem', 
+                      backgroundColor: selectedColor === color ? '#c9a15a' : '#222', 
+                      color: selectedColor === color ? '#000' : '#fff',
+                      padding: '4px 10px', 
+                      borderRadius: '4px', 
+                      cursor: 'pointer',
+                      border: selectedColor === color ? '1px solid #c9a15a' : '1px solid #444',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {color}
+                  </span>
                 ))}
                 {availableColors.length === 0 && <span style={{fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)'}}>No colors</span>}
               </div>
