@@ -143,6 +143,7 @@ const AccordionGallery = ({
       aria-label="Image accordion gallery"
       onScroll={handleScroll}
     >
+      <div className="ag-spacer" aria-hidden="true" />
       {items.map((item, i) => {
         const isActive = i === active;
         const Tag = (item.link ? 'a' : 'div') as 'a';
@@ -192,6 +193,7 @@ const AccordionGallery = ({
           </Tag>
         );
       })}
+      <div className="ag-spacer" aria-hidden="true" />
     </div>
   );
 };
