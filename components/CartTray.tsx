@@ -50,7 +50,8 @@ export default function CartTray({ items, onRemove, whatsappNumber }: CartTrayPr
       text += `Link: ${window.location.origin}/#collections\n\n`;
     });
     
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+    const formattedNumber = whatsappNumber.replace(/\D/g, '');
+    window.open(`https://wa.me/${formattedNumber}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
