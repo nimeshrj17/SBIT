@@ -16,6 +16,20 @@ export default function SettingsPage() {
   const [backgroundColor, setBackgroundColor] = useState("#1a0a0d");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  
+  const [aboutUsData, setAboutUsData] = useState({
+    heroTitle: "Rooted in tradition,\ncrafted for today.",
+    heroText: "House of Shri is a Surat-based manufacturer and exporter of premium lehngas and Indian ethnic wear. With decades of craftsmanship behind us, we blend heritage techniques with modern aesthetics to create timeless pieces for every occasion.",
+    heroImage: "",
+    storyTitle: "From Surat to\nthe world",
+    storyText: "What began as a small family-run atelier in Surat has grown into a trusted name in ethnic wear. Our commitment to quality, detail and delivery has helped us build lasting relationships with retailers and boutiques across India and around the globe.",
+    cards: [
+      { title: "Hand Embroidery", text: "Intricate detailing by skilled artisans", image: "" },
+      { title: "Skilled Craftsmanship", text: "Years of experience passed down through generations", image: "" },
+      { title: "Quality & Precision", text: "Every piece undergoes strict quality checks", image: "" },
+      { title: "Global Shipping", text: "Delivered with care, across the world", image: "" }
+    ]
+  });
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -35,6 +49,10 @@ export default function SettingsPage() {
       if (fabrics) setAvailableFabrics(fabrics);
       const bgColor = await getSetting("backgroundColor");
       if (bgColor) setBackgroundColor(bgColor);
+      const about = await getSetting("aboutUsData");
+      if (about) {
+        try { setAboutUsData(JSON.parse(about)); } catch(e) {}
+      }
     };
     fetchSettings();
   }, []);
@@ -53,6 +71,7 @@ export default function SettingsPage() {
       await setSetting("availableColors", availableColors);
       await setSetting("availableFabrics", availableFabrics);
       await setSetting("backgroundColor", backgroundColor);
+      await setSetting("aboutUsData", JSON.stringify(aboutUsData));
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
@@ -398,6 +417,115 @@ export default function SettingsPage() {
 
         </form>
       </div>
+
+      <div style={{ backgroundColor: 'rgba(30, 15, 20, 0.6)', padding: '2rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', maxWidth: '600px', marginTop: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}>
+          <Settings size={24} style={{ color: '#c9a15a' }} />
+          <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 500, color: '#f7f4ee' }}>About Us Configuration</h2>
+        </div>
+        
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Hero Title</label>
+            <textarea 
+              value={aboutUsData.heroTitle}
+              onChange={(e) => setAboutUsData({...aboutUsData, heroTitle: e.target.value})}
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff', minHeight: '80px' }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Hero Text</label>
+            <textarea 
+              value={aboutUsData.heroText}
+              onChange={(e) => setAboutUsData({...aboutUsData, heroText: e.target.value})}
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff', minHeight: '120px' }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Hero Image URL</label>
+            <input 
+              type="text"
+              value={aboutUsData.heroImage}
+              onChange={(e) => setAboutUsData({...aboutUsData, heroImage: e.target.value})}
+              placeholder="https://..."
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff' }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Story Title</label>
+            <textarea 
+              value={aboutUsData.storyTitle}
+              onChange={(e) => setAboutUsData({...aboutUsData, storyTitle: e.target.value})}
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff', minHeight: '80px' }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Story Text</label>
+            <textarea 
+              value={aboutUsData.storyText}
+              onChange={(e) => setAboutUsData({...aboutUsData, storyText: e.target.value})}
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff', minHeight: '120px' }}
+            />
+          </div>
+
+          <div style={{ marginTop: '1rem' }}>
+            <h3 style={{ fontSize: '1rem', color: '#c9a15a', marginBottom: '1rem' }}>Media Cards (Video/Images)</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {aboutUsData.cards.map((card, idx) => (
+                <div key={idx} style={{ padding: '1rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                  <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Card {idx + 1} Title</label>
+                  <input 
+                    type="text" 
+                    value={card.title}
+                    onChange={(e) => {
+                      const newCards = [...aboutUsData.cards];
+                      newCards[idx].title = e.target.value;
+                      setAboutUsData({...aboutUsData, cards: newCards});
+                    }}
+                    style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff', marginBottom: '1rem' }}
+                  />
+                  <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Card {idx + 1} Text</label>
+                  <input 
+                    type="text" 
+                    value={card.text}
+                    onChange={(e) => {
+                      const newCards = [...aboutUsData.cards];
+                      newCards[idx].text = e.target.value;
+                      setAboutUsData({...aboutUsData, cards: newCards});
+                    }}
+                    style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff', marginBottom: '1rem' }}
+                  />
+                  <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Image/Video Cover URL</label>
+                  <input 
+                    type="text" 
+                    value={card.image}
+                    onChange={(e) => {
+                      const newCards = [...aboutUsData.cards];
+                      newCards[idx].image = e.target.value;
+                      setAboutUsData({...aboutUsData, cards: newCards});
+                    }}
+                    placeholder="https://..."
+                    style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff' }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+            <button type="submit" disabled={isSaving} style={{ backgroundColor: '#c9a15a', color: '#111', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Save size={18} /> {isSaving ? "Saving..." : "Save Settings"}
+            </button>
+            {saveSuccess && <span style={{ color: '#4caf50', fontSize: '0.9rem' }}>Settings saved successfully!</span>}
+          </div>
+        </form>
+      </div>
+
     </div>
   );
 }

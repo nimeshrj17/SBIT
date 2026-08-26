@@ -8,18 +8,14 @@ export default function WhatsAppFloating({ phoneNumber = "919999999999" }: { pho
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Toggle tooltip every 4 seconds
-    const interval = setInterval(() => {
-      setShowTooltip(prev => !prev);
-    }, 4000);
+    // Initial show after 2 seconds
+    const initialTimer = setTimeout(() => {
+      setShowTooltip(true);
+      // Hide after 4 seconds
+      setTimeout(() => setShowTooltip(false), 4000);
+    }, 2000);
     
-    // Initial show after 1 second
-    const initialTimer = setTimeout(() => setShowTooltip(true), 1000);
-    
-    return () => {
-      clearInterval(interval);
-      clearTimeout(initialTimer);
-    };
+    return () => clearTimeout(initialTimer);
   }, []);
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=Hi! I would like to know more about your products.`;

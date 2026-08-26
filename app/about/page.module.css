@@ -1,0 +1,269 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  background-color: var(--color-background, #1a0a0d);
+  color: #f7f4ee;
+}
+
+.heroSection {
+  padding: 8rem 5% 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.overline {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: #c9a15a;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.overline::before {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 1px;
+  background-color: #c9a15a;
+  margin-right: 15px;
+}
+
+.heroTitle {
+  font-family: var(--font-playfair);
+  font-size: 4rem;
+  line-height: 1.1;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+
+.heroTitle i {
+  font-style: italic;
+  color: #f7f4ee;
+}
+
+.heroText {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(247, 244, 238, 0.8);
+  margin-bottom: 3rem;
+  max-width: 90%;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.featureIcon {
+  color: #c9a15a;
+}
+
+.featureText {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(247, 244, 238, 0.8);
+}
+
+.heroImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playButtonOverlay {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.playButtonOverlay:hover {
+  transform: scale(1.05);
+}
+
+.playIcon {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a0a0d;
+}
+
+.playText {
+  font-weight: 600;
+  font-size: 1rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.storySection {
+  padding: 4rem 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+}
+
+.storyContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.storyTitle {
+  font-family: var(--font-playfair);
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+
+.storyText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(247, 244, 238, 0.8);
+  margin-bottom: 2rem;
+}
+
+.journeyBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid rgba(247, 244, 238, 0.3);
+  color: #f7f4ee;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  background: transparent;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.journeyBtn:hover {
+  background: rgba(247, 244, 238, 0.1);
+  border-color: #f7f4ee;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardImageWrapper {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cardImageWrapper:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cardPlayIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+  color: white;
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.cardText {
+  font-size: 0.85rem;
+  color: rgba(247, 244, 238, 0.6);
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .heroSection, .storySection {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+  
+  .storyTitle {
+    font-size: 2.5rem;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+}
