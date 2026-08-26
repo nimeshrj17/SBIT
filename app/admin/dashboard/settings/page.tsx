@@ -31,6 +31,33 @@ export default function SettingsPage() {
     ]
   });
 
+  const processImageFile = (file: File, callback: (base64: string) => void) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const MAX_SIZE = 800;
+        if (width > height && width > MAX_SIZE) {
+          height *= MAX_SIZE / width;
+          width = MAX_SIZE;
+        } else if (height > MAX_SIZE) {
+          width *= MAX_SIZE / height;
+          height = MAX_SIZE;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL("image/jpeg", 0.7));
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
   useEffect(() => {
     const fetchSettings = async () => {
       const number = await getSetting("whatsappNumber");
@@ -445,13 +472,32 @@ export default function SettingsPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Hero Image URL</label>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>Hero Image</label>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <input 
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    processImageFile(file, (base64) => {
+                      setAboutUsData({...aboutUsData, heroImage: base64});
+                    });
+                  }
+                }}
+                style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.75rem', borderRadius: '6px', color: '#fff' }}
+              />
+              {aboutUsData.heroImage && (
+                <img src={aboutUsData.heroImage} alt="Hero Preview" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+              )}
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', margin: 0 }}>Or paste URL:</p>
             <input 
               type="text"
               value={aboutUsData.heroImage}
               onChange={(e) => setAboutUsData({...aboutUsData, heroImage: e.target.value})}
               placeholder="https://..."
-              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '6px', color: '#fff' }}
+              style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.75rem', borderRadius: '6px', color: '#fff' }}
             />
           </div>
 
@@ -500,7 +546,27 @@ export default function SettingsPage() {
                     }}
                     style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff', marginBottom: '1rem' }}
                   />
-                  <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Image/Video Cover URL</label>
+                  <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Card {idx + 1} Image / Video Cover</label>
+                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+                    <input 
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          processImageFile(file, (base64) => {
+                            const newCards = [...aboutUsData.cards];
+                            newCards[idx].image = base64;
+                            setAboutUsData({...aboutUsData, cards: newCards});
+                          });
+                        }
+                      }}
+                      style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff', fontSize: '0.8rem' }}
+                    />
+                    {card.image && (
+                      <img src={card.image} alt="Preview" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                    )}
+                  </div>
                   <input 
                     type="text" 
                     value={card.image}
@@ -509,7 +575,7 @@ export default function SettingsPage() {
                       newCards[idx].image = e.target.value;
                       setAboutUsData({...aboutUsData, cards: newCards});
                     }}
-                    placeholder="https://..."
+                    placeholder="Or paste URL (https://...)"
                     style={{ width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: '#fff' }}
                   />
                 </div>
