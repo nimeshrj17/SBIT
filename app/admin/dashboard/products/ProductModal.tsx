@@ -21,7 +21,8 @@ const emptyProduct: Omit<Product, "id"> = {
   isPopular: false,
   isBestSeller: false,
   colors: [],
-  extraColorsCount: 0
+  extraColorsCount: 0,
+  images: []
 };
 
 
@@ -89,39 +90,63 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const img = new window.Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          let width = img.width;
-          let height = img.height;
-          
-          // Max dimensions
-          const MAX_SIZE = 800;
-          if (width > height && width > MAX_SIZE) {
-            height *= MAX_SIZE / width;
-            width = MAX_SIZE;
-          } else if (height > MAX_SIZE) {
-            width *= MAX_SIZE / height;
-            height = MAX_SIZE;
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0, width, height);
-          
-          // Compress to JPEG 70% quality to ensure it fits in Firestore 1MB limit
-          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
-          setFormData(prev => ({ ...prev, image: compressedBase64 }));
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const img = new window.Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            
+            // Max dimensions
+            const MAX_SIZE = 800;
+            if (width > height && width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            } else if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx?.drawImage(img, 0, 0, width, height);
+            
+            // Compress to JPEG 70% quality to ensure it fits in Firestore 1MB limit
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+            setFormData(prev => {
+              const currentImages = prev.images?.length ? prev.images : (prev.image ? [prev.image] : []);
+              const newImages = [...currentImages, compressedBase64];
+              return { 
+                ...prev, 
+                image: newImages[0],
+                images: newImages
+              };
+            });
+          };
+          img.src = reader.result as string;
         };
-        img.src = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      });
     }
+    // Clear input so same file can be uploaded again if needed
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFormData(prev => {
+      const currentImages = prev.images?.length ? prev.images : (prev.image ? [prev.image] : []);
+      const newImages = currentImages.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        images: newImages,
+        image: newImages.length > 0 ? newImages[0] : ""
+      };
+    });
   };
 
   const handleAddColor = () => {
@@ -254,13 +279,16 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
             </div>
             
             <div className={styles.formGroup}>
-              <label htmlFor="image">Upload Product Image</label>
-              <input type="file" id="image" accept="image/*" onChange={handleImageUpload} style={{ padding: '0.5rem 0' }} />
-              {formData.image && (
-                <div style={{ marginTop: '0.5rem', width: '100px', height: '100px', position: 'relative', borderRadius: '4px', overflow: 'hidden' }}>
-                  <img src={formData.image} alt="Preview" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
-                </div>
-              )}
+              <label htmlFor="image">Upload Product Images</label>
+              <input type="file" id="image" accept="image/*" multiple onChange={handleImageUpload} style={{ padding: '0.5rem 0' }} />
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                {(formData.images?.length ? formData.images : (formData.image ? [formData.image] : [])).map((imgSrc, i) => (
+                  <div key={i} style={{ width: '80px', height: '80px', position: 'relative', borderRadius: '4px', overflow: 'hidden', border: '1px solid #444' }}>
+                    <img src={imgSrc} alt="Preview" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                    <button type="button" onClick={() => handleRemoveImage(i)} style={{ position: 'absolute', top: '2px', right: '2px', background: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', lineHeight: '1' }}>&times;</button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           

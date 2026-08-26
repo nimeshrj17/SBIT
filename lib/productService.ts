@@ -19,6 +19,7 @@ export interface Product {
   title: string;
   price: number;
   image: string;
+  images?: string[];
   categories: string[];
   fabric?: string;
   isNew: boolean;

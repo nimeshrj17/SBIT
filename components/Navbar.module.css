@@ -152,6 +152,7 @@
 @media (max-width: 1024px) {
   .navbar {
     flex-direction: row;
+    justify-content: space-between;
     gap: 1.5rem;
     padding: 1rem 1.5rem;
     border-radius: 50px;
@@ -159,6 +160,7 @@
   
   .mobileMenuBtn {
     display: flex;
+    margin-left: auto;
   }
   
   .links {

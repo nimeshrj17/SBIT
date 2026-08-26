@@ -388,6 +388,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                     <ProductCard 
                       key={product.id}
                       image={product.image}
+                      images={product.images}
                       title={product.title}
                       productCode={product.productCode || product.id}
                       price={product.price}
@@ -400,7 +401,8 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                       onAddToCart={() => onAddToCart && onAddToCart(product)}
                       onInquiry={() => {
                         if (!whatsappNumber) return;
-                        const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${window.location.origin}/#collections`;
+                        const productUrl = `${window.location.origin}/?product=${product.productCode || product.id}#collections`;
+                        const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${productUrl}`;
                         const formattedNumber = whatsappNumber.replace(/\D/g, '');
                         window.open(`https://wa.me/${formattedNumber}?text=${encodeURIComponent(text)}`, "_blank");
                       }}
