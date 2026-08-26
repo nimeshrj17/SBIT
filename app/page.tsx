@@ -12,6 +12,8 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CollectionsSection from "@/components/CollectionsSection";
 import Footer from "@/components/Footer";
+import WhatsAppFloating from "@/components/WhatsAppFloating";
+import { getSetting } from "@/lib/productService";
 
 // Mock Data for the catalogue
 const MOCK_CATEGORIES = [
@@ -109,6 +111,9 @@ export default function Home() {
         onRemove={handleRemoveFromCart}
         whatsappNumber={whatsappNumber}
       />
+      
+      {/* WhatsApp Floating Widget */}
+      <WhatsAppFloating phoneNumber={whatsappNumber} />
     </div>
   );
 }
