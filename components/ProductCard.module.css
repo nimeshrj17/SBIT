@@ -167,7 +167,8 @@
 }
 
 .content {
-  padding: 0.5rem 0;
+  background-color: #eae5dc;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -176,7 +177,7 @@
 .title {
   font-family: var(--font-heading);
   font-size: 0.85rem;
-  color: rgba(245, 239, 230, 0.9);
+  color: #1a0a0d;
   margin: 0 0 0.2rem 0;
   font-weight: 500;
   white-space: nowrap;
@@ -186,7 +187,7 @@
 
 .productCode {
   font-size: 0.65rem;
-  color: rgba(245, 239, 230, 0.6);
+  color: #555;
   font-family: monospace;
 }
 
@@ -207,12 +208,12 @@
 .price {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #f7f4ee;
+  color: #1a0a0d;
 }
 
 .gst {
   font-size: 0.55rem;
-  color: rgba(245, 239, 230, 0.6);
+  color: #555;
 }
 
 .colorsRow {
@@ -226,12 +227,12 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(0,0,0,0.2);
 }
 
 .extraColors {
   font-size: 0.6rem;
-  color: rgba(245, 239, 230, 0.6);
+  color: #555;
   background-color: transparent;
   padding: 0;
   margin-left: 2px;
@@ -248,8 +249,8 @@
 
 .btnAddToCart {
   background-color: transparent;
-  color: #c9a15a;
-  border: 1px solid rgba(201, 161, 90, 0.5);
+  color: #1a0a0d;
+  border: 1px solid rgba(26, 10, 13, 0.5);
   border-radius: 2px;
   padding: 0.2rem 1rem;
   font-size: 0.65rem;
@@ -259,13 +260,13 @@
 }
 
 .btnAddToCart:hover {
-  background-color: rgba(201, 161, 90, 0.1);
-  border-color: #c9a15a;
+  background-color: rgba(26, 10, 13, 0.05);
+  border-color: #1a0a0d;
 }
 
 .btnInquiry {
   background-color: transparent;
-  color: rgba(245, 239, 230, 0.6);
+  color: #555;
   border: none;
   padding: 0.2rem 0;
   font-size: 0.65rem;
@@ -275,7 +276,7 @@
 }
 
 .btnInquiry:hover {
-  color: #c9a15a;
+  color: #1a0a0d;
   text-decoration: underline;
 }
 
