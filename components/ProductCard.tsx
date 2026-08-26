@@ -149,7 +149,6 @@ export default function ProductCard({
             onClick={onAddToCart}
           >
             <ShoppingBag size={14} />
-            <span className={styles.hideOnMobile}>Add to Cart</span>
           </SpecularButton>
           <SpecularButton
             size="sm"
@@ -170,7 +169,6 @@ export default function ProductCard({
             autoAnimate={false}
             onClick={onInquiry}
           >
-            <span className={styles.hideOnMobile} style={{ display: 'flex' }}><MessageCircle size={14} /></span>
             Inquiry
           </SpecularButton>
         </div>

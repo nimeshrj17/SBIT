@@ -13,6 +13,7 @@ export default function SettingsPage() {
   const [enablePriceRange, setEnablePriceRange] = useState(true);
   const [availableColors, setAvailableColors] = useState("Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani");
   const [availableFabrics, setAvailableFabrics] = useState("Silk, Georgette, Velvet, Net, Crepe, Organza");
+  const [backgroundColor, setBackgroundColor] = useState("#1a0a0d");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -32,6 +33,8 @@ export default function SettingsPage() {
       if (colors) setAvailableColors(colors);
       const fabrics = await getSetting("availableFabrics");
       if (fabrics) setAvailableFabrics(fabrics);
+      const bgColor = await getSetting("backgroundColor");
+      if (bgColor) setBackgroundColor(bgColor);
     };
     fetchSettings();
   }, []);
@@ -49,6 +52,7 @@ export default function SettingsPage() {
       await setSetting("enablePriceRange", enablePriceRange.toString());
       await setSetting("availableColors", availableColors);
       await setSetting("availableFabrics", availableFabrics);
+      await setSetting("backgroundColor", backgroundColor);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
@@ -195,7 +199,49 @@ export default function SettingsPage() {
               required
             />
           </div>
-                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="backgroundColor" style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Storefront Background Color
+            </label>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <input 
+                type="color" 
+                id="backgroundColorPicker"
+                value={backgroundColor}
+                onChange={(e) => setBackgroundColor(e.target.value)}
+                style={{ 
+                  width: '50px', 
+                  height: '50px', 
+                  padding: '0', 
+                  border: 'none', 
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  backgroundColor: 'transparent'
+                }}
+              />
+              <input 
+                type="text" 
+                id="backgroundColor"
+                value={backgroundColor}
+                onChange={(e) => setBackgroundColor(e.target.value)}
+                placeholder="#1a0a0d"
+                style={{ 
+                  flex: 1,
+                  backgroundColor: 'rgba(0,0,0,0.3)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  padding: '1rem', 
+                  borderRadius: '6px',
+                  color: '#fff',
+                  fontFamily: 'monospace',
+                  fontSize: '1rem'
+                }}
+                required
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
               Available Colors
             </label>

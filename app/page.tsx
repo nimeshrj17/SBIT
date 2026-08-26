@@ -60,6 +60,11 @@ export default function Home() {
       getSetting("storeAddress").then(addr => {
         if (addr) setStoreAddress(addr);
       });
+      getSetting("backgroundColor").then(color => {
+        if (color) {
+          document.body.style.backgroundColor = color;
+        }
+      });
     });
   }, []);
 
