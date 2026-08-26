@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import styles from "./CollectionsSection.module.css";
 import ProductCard from "./ProductCard";
 import Carousel from "./Carousel";
-import { Filter, Search, ChevronDown, ChevronRight, Flower } from "lucide-react";
+import { ArrowRight, ShoppingBag, MessageCircle, ChevronDown, Filter, ChevronRight, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { getProducts, getCategories, getSetting, Product, Category } from "@/lib/productService";
 
@@ -114,6 +114,14 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   }, []);
 
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const categoryNavRef = useRef<HTMLDivElement>(null);
+
+  const scrollNav = (direction: 'left' | 'right') => {
+    if (categoryNavRef.current) {
+      const scrollAmount = 200;
+      categoryNavRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   return (
     <section id="collections" className={styles.section}>
@@ -150,20 +158,27 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
         </div>
         
         {/* Category Navigation */}
-        <div className={styles.categoryNav}>
-          {categories.map((cat, index) => (
-            <div key={cat.id} style={{ display: 'flex', alignItems: 'center' }}>
-              <button 
-                className={`${styles.navItem} ${selectedCategory === cat.slug ? styles.active : ''}`}
-                onClick={() => setSelectedCategory(cat.slug)}
-              >
-                <span className={styles.navIcon}>&#10086;</span>
-                {cat.name}
-              </button>
-              {index < categories.length - 1 && <div className={styles.navSeparator}></div>}
-            </div>
-          ))}
-          <button className={styles.navArrow}><ChevronRight size={16} /></button>
+        <div className={styles.categoryNavContainer}>
+          <button className={styles.navArrowLeft} onClick={() => scrollNav('left')} aria-label="Scroll left">
+            <ChevronLeft size={16} />
+          </button>
+          <div className={styles.categoryNav} ref={categoryNavRef}>
+            {categories.map((cat, index) => (
+              <div key={cat.id} style={{ display: 'flex', alignItems: 'center' }}>
+                <button 
+                  className={`${styles.navItem} ${selectedCategory === cat.slug ? styles.active : ''}`}
+                  onClick={() => setSelectedCategory(cat.slug)}
+                >
+                  <span className={styles.navIcon}>&#10086;</span>
+                  {cat.name}
+                </button>
+                {index < categories.length - 1 && <div className={styles.navSeparator}></div>}
+              </div>
+            ))}
+          </div>
+          <button className={styles.navArrowRight} onClick={() => scrollNav('right')} aria-label="Scroll right">
+            <ChevronRight size={16} />
+          </button>
         </div>
         
         {/* Main Layout Grid */}

@@ -215,7 +215,19 @@
     font-size: 0.9rem;
   }
   .actions {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .actions button {
+    flex: 1;
+    min-width: 45%;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .actions button svg {
+    width: 12px;
+    height: 12px;
   }
   .btnAddToCart, .btnInquiry {
     padding: 0.5rem 0;
