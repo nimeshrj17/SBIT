@@ -40,10 +40,10 @@
 }
 
 .heroTitle {
-  font-family: var(--font-playfair);
+  font-family: var(--font-heading);
   font-size: 4rem;
   line-height: 1.1;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 1.5rem;
   white-space: pre-line;
 }
@@ -145,10 +145,10 @@
 }
 
 .storyTitle {
-  font-family: var(--font-playfair);
+  font-family: var(--font-heading);
   font-size: 3rem;
   line-height: 1.1;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 1.5rem;
   white-space: pre-line;
 }

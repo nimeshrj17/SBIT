@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   // Close menu on scroll
   useEffect(() => {
@@ -45,9 +47,9 @@ export default function Navbar() {
         </button>
 
         <div className={`${styles.links} ${isMobileMenuOpen ? styles.mobileOpen : ''}`}>
-          <Link href="/" className={`${styles.link} ${styles.active}`} onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link href="/" className={`${styles.link} ${pathname === '/' ? styles.active : ''}`} onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
           <a href="/#collections" className={styles.link} onClick={() => setIsMobileMenuOpen(false)}>Collections</a>
-          <Link href="/about" className={styles.link} onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+          <Link href="/about" className={`${styles.link} ${pathname === '/about' ? styles.active : ''}`} onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
           <a href="#contact" className={styles.link} onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
         </div>
       </div>
