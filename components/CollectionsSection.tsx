@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./CollectionsSection.module.css";
 import ProductCard from "./ProductCard";
 import Carousel from "./Carousel";
-import { ArrowRight, ShoppingBag, MessageCircle, ChevronDown, Filter, ChevronRight, ChevronLeft } from "lucide-react";
+import { ArrowRight, ShoppingBag, MessageCircle, ChevronDown, Filter, ChevronRight, ChevronLeft, Search, Flower } from "lucide-react";
 import Link from "next/link";
 import { getProducts, getCategories, getSetting, Product, Category } from "@/lib/productService";
 
