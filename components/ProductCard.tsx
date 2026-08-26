@@ -100,22 +100,19 @@ export default function ProductCard({
       </div>
       
       <div className={styles.content}>
-        <h3 className={styles.title}>{title}</h3>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-          {productCode && <span className={styles.productCode}>{productCode}</span>}
-          
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3 className={styles.title}>{title}</h3>
           {colors.length > 0 && (
-            <div className={styles.colorsRow} style={{ display: 'flex', gap: '3px', flexWrap: 'wrap', margin: 0 }}>
+            <div className={styles.colorsRow}>
               {colors.map((color, index) => {
                 const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
                 return (
                   <span 
                     key={index} 
-                    style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', backgroundColor: '#eee', padding: '1px 5px', borderRadius: '3px', color: '#333' }}
-                  >
-                    {hex !== 'transparent' && <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: hex }}></span>}
-                    {name}
-                  </span>
+                    className={styles.colorSwatch} 
+                    style={{ backgroundColor: hex !== 'transparent' ? hex : '#ccc' }} 
+                    title={name} 
+                  />
                 );
               })}
               {extraColorsCount > 0 && (
@@ -125,52 +122,21 @@ export default function ProductCard({
           )}
         </div>
         
-        <div className={styles.priceRow} style={{ display: 'none' }}>
+        <div className={styles.priceRow}>
+          <div className={styles.priceGroup}>
+            <span className={styles.price}>{formattedPrice}</span>
+            <span className={styles.gst}>+18% GST</span>
+          </div>
+          {productCode && <span className={styles.productCode}>{productCode}</span>}
         </div>
         
         <div className={styles.actions}>
-          <SpecularButton
-            size="sm"
-            radius={8}
-            tint="#000000"
-            tintOpacity={1}
-            blur={0}
-            textColor="#ffffff"
-            lineColor="#555555"
-            baseColor="#000000"
-            intensity={1.2}
-            shineSize={10}
-            shineFade={40}
-            thickness={1}
-            speed={0.35}
-            followMouse={true}
-            proximity={250}
-            autoAnimate={false}
-            onClick={onAddToCart}
-          >
-            <ShoppingBag size={14} />
-          </SpecularButton>
-          <SpecularButton
-            size="sm"
-            radius={8}
-            tint="#000000"
-            tintOpacity={1}
-            blur={0}
-            textColor="#ffffff"
-            lineColor="#555555"
-            baseColor="#000000"
-            intensity={1}
-            shineSize={10}
-            shineFade={40}
-            thickness={1}
-            speed={0.35}
-            followMouse={true}
-            proximity={250}
-            autoAnimate={false}
-            onClick={onInquiry}
-          >
-            Inquiry
-          </SpecularButton>
+          <button className={styles.btnAddToCart} onClick={onAddToCart}>
+            ADD
+          </button>
+          <button className={styles.btnInquiry} onClick={onInquiry}>
+            WHATSAPP
+          </button>
         </div>
       </div>
     </div>

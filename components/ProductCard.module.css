@@ -1,15 +1,14 @@
 .card {
-  background-color: #eae5dc;
+  background-color: transparent;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
 }
 
 .imageContainer {
@@ -168,7 +167,7 @@
 }
 
 .content {
-  padding: 1rem;
+  padding: 0.5rem 0;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -176,109 +175,108 @@
 
 .title {
   font-family: var(--font-heading);
-  font-size: 1rem;
-  color: #1a0a0d;
+  font-size: 0.85rem;
+  color: rgba(245, 239, 230, 0.9);
   margin: 0 0 0.2rem 0;
-  font-weight: 600;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .productCode {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: 0.65rem;
+  color: rgba(245, 239, 230, 0.6);
   font-family: monospace;
 }
 
 .priceRow {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.priceGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
 }
 
 .price {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #1a0a0d;
+  color: #f7f4ee;
 }
 
 .gst {
-  font-size: 0.65rem;
-  color: #666;
+  font-size: 0.55rem;
+  color: rgba(245, 239, 230, 0.6);
 }
 
 .colorsRow {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 0.75rem;
+  gap: 4px;
+  margin-bottom: 0.4rem;
 }
 
 .colorSwatch {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
 .extraColors {
-  font-size: 0.7rem;
-  color: #666;
-  background-color: #e5e0d8;
-  padding: 2px 6px;
-  border-radius: 10px;
-  margin-left: 4px;
+  font-size: 0.6rem;
+  color: rgba(245, 239, 230, 0.6);
+  background-color: transparent;
+  padding: 0;
+  margin-left: 2px;
 }
 
 .actions {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.25rem;
+  justify-content: space-between;
+  align-items: center;
   margin-top: auto;
+  gap: 0.5rem;
 }
 
 .btnAddToCart {
-  flex: 1;
-  min-width: 45%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background-color: #2b1318;
-  color: #f7f4ee;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 0.2rem;
+  background-color: transparent;
+  color: #c9a15a;
+  border: 1px solid rgba(201, 161, 90, 0.5);
+  border-radius: 2px;
+  padding: 0.2rem 1rem;
   font-size: 0.65rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .btnAddToCart:hover {
-  background-color: #1a0a0d;
+  background-color: rgba(201, 161, 90, 0.1);
+  border-color: #c9a15a;
 }
 
 .btnInquiry {
-  flex: 1;
-  min-width: 45%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
   background-color: transparent;
-  color: #1a0a0d;
-  border: 1px solid #d4cdc1;
-  border-radius: 4px;
-  padding: 0.5rem 0.2rem;
+  color: rgba(245, 239, 230, 0.6);
+  border: none;
+  padding: 0.2rem 0;
   font-size: 0.65rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: color 0.2s;
 }
 
 .btnInquiry:hover {
-  background-color: rgba(0,0,0,0.05);
+  color: #c9a15a;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
