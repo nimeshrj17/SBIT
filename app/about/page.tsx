@@ -114,7 +114,7 @@ export default function AboutUsPage() {
           <h2 className={styles.storyTitle}>{aboutData.storyTitle}</h2>
           <p className={styles.storyText}>{aboutData.storyText}</p>
           <Link href="/#collections" className={styles.journeyBtn}>
-            OUR JOURNEY &rarr;
+            OUR COLLECTION &rarr;
           </Link>
         </div>
 
