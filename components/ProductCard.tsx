@@ -175,6 +175,7 @@ export default function ProductCard({
           </SpecularButton>
         </div>
       </div>
+    </div>
 
       {isModalOpen && (
         <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)}>
