@@ -232,4 +232,7 @@
   .btnAddToCart, .btnInquiry {
     padding: 0.5rem 0;
   }
+  .hideOnMobile {
+    display: none !important;
+  }
 }
