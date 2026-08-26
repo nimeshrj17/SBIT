@@ -91,6 +91,9 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <div style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: '#c9a15a', color: '#1a0a0d', textAlign: 'center', padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', width: '100%' }}>
+        MADE FOR BUSINESSES AND TRADE
+      </div>
       <Navbar />
       <Hero />
       <CollectionsSection onAddToCart={handleAddToCart} />

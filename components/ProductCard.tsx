@@ -123,10 +123,6 @@ export default function ProductCard({
         </div>
         
         <div className={styles.priceRow}>
-          <div className={styles.priceGroup}>
-            <span className={styles.price}>{formattedPrice}</span>
-            <span className={styles.gst}>+18% GST</span>
-          </div>
           {productCode && <span className={styles.productCode}>{productCode}</span>}
         </div>
         
