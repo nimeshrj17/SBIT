@@ -91,7 +91,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <div style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: '#c9a15a', color: '#1a0a0d', textAlign: 'center', padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', width: '100%' }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: '#c9a15a', color: '#1a0a0d', textAlign: 'center', padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em' }}>
         MADE FOR BUSINESSES AND TRADE
       </div>
       <Navbar />
