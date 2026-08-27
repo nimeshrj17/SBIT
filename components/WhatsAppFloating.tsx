@@ -18,7 +18,8 @@ export default function WhatsAppFloating({ phoneNumber = "919999999999" }: { pho
     return () => clearTimeout(initialTimer);
   }, []);
 
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=Hi! I would like to know more about your products.`;
+  const cleanNumber = phoneNumber.replace(/\D/g, '');
+  const whatsappUrl = `https://wa.me/${cleanNumber}?text=Hi! I would like to know more about your products.`;
 
   return (
     <div 

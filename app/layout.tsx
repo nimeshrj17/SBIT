@@ -14,8 +14,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Shree Balaji International Textile",
+  title: "House of Shri",
   description: "Manufacturer direct · Wholesale product catalogue",
+  icons: {
+    icon: '/logo.jpg',
+    apple: '/logo.jpg',
+  }
 };
 
 export default function RootLayout({
