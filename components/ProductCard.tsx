@@ -126,12 +126,11 @@ export default function ProductCard({
           {productCode && <span className={styles.productCode}>{productCode}</span>}
         </div>
         
-        <div className={styles.actions}>
           <button className={styles.btnAddToCart} onClick={onAddToCart}>
             ADD
           </button>
           <button className={styles.btnInquiry} onClick={onInquiry}>
-            WHATSAPP
+            INQUIRY
           </button>
         </div>
       </div>

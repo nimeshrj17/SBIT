@@ -150,8 +150,9 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   };
 
   const handleAddColor = () => {
-    if (colorInput && !formData.colors.includes(colorInput)) {
-      setFormData(prev => ({ ...prev, colors: [...prev.colors, colorInput] }));
+    const currentColors = formData.colors || [];
+    if (colorInput && !currentColors.includes(colorInput)) {
+      setFormData(prev => ({ ...prev, colors: [...(prev.colors || []), colorInput] }));
       setColorInput("");
     }
   };
@@ -159,7 +160,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
   const handleRemoveColor = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      colors: prev.colors.filter((_, i) => i !== index)
+      colors: (prev.colors || []).filter((_, i) => i !== index)
     }));
   };
 
@@ -309,7 +310,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
               <button type="button" onClick={handleAddColor} className={styles.addBtn}>Add Color</button>
             </div>
             <div className={styles.colorChips}>
-              {formData.colors.map((c, i) => {
+              {(formData.colors || []).map((c, i) => {
                 const [name, hex] = c.includes('|') ? c.split('|') : [c, '#ccc'];
                 return (
                   <div key={i} className={styles.colorChip}>

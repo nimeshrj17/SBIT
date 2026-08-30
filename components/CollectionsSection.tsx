@@ -402,7 +402,8 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                       onInquiry={() => {
                         if (!whatsappNumber) return;
                         const productUrl = `${window.location.origin}/?product=${product.productCode || product.id}#collections`;
-                        const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nLink: ${productUrl}`;
+                        const imageUrl = `${window.location.origin}/api/product-image?id=${product.id}`;
+                        const text = `Hi, I would like to inquire about this product:\n\n${product.title} (Code: ${product.productCode || product.id})\nProduct Link: ${productUrl}\nImage: ${imageUrl}`;
                         const formattedNumber = whatsappNumber.replace(/\D/g, '');
                         window.open(`https://wa.me/${formattedNumber}?text=${encodeURIComponent(text)}`, "_blank");
                       }}

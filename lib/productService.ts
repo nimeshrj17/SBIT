@@ -102,6 +102,23 @@ export const addProduct = async (product: Omit<Product, "id">): Promise<string> 
   return docRef.id;
 };
 
+export const getProduct = async (id: string): Promise<Product | null> => {
+  if (!hasRealDb()) {
+    return mockProducts.find(p => p.id === id) || null;
+  }
+  try {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as Product;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+};
+
 export const updateProduct = async (id: string, updates: Partial<Product>): Promise<void> => {
   if (!hasRealDb()) {
     mockProducts = mockProducts.map(p => p.id === id ? { ...p, ...updates } : p);

@@ -121,11 +121,11 @@ export default function AdminDashboard() {
                         <span className={styles.productTitle}>{product.title}</span>
                         {product.productCode && <span className={styles.productCode} style={{ fontSize: '0.8rem', color: '#888' }}>{product.productCode}</span>}
                         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
-                          {product.colors.map((c, i) => {
+                          {(product.colors || []).map((c, i) => {
                             const [name, hex] = c.includes('|') ? c.split('|') : [c, '#ccc'];
                             return (
                               <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', backgroundColor: '#eee', padding: '2px 6px', borderRadius: '4px', color: '#333' }}>
-                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: hex }}></span>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: hex, display: 'inline-block' }}></span>
                                 {name}
                               </span>
                             );
