@@ -100,10 +100,10 @@ export default function ProductCard({
       </div>
       
       <div className={styles.content}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 className={styles.title}>{title}</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+          {productCode && <h3 className={styles.title} style={{ fontSize: '0.95rem', fontFamily: 'monospace', margin: 0 }}>{productCode}</h3>}
           {colors.length > 0 && (
-            <div className={styles.colorsRow}>
+            <div className={styles.colorsRow} style={{ margin: 0 }}>
               {colors.map((color, index) => {
                 const [name, hex] = color.includes('|') ? color.split('|') : [color, 'transparent'];
                 return (
@@ -122,9 +122,11 @@ export default function ProductCard({
           )}
         </div>
         
-        <div className={styles.priceRow}>
-          {productCode && <span className={styles.productCode}>{productCode}</span>}
-        </div>
+        {colors.length > 0 && (
+          <div style={{ fontSize: '0.75rem', color: '#666', marginBottom: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {colors.map(c => c.includes('|') ? c.split('|')[0] : c).join(', ')}
+          </div>
+        )}
         
         <div className={styles.actions}>
           <button className={styles.btnAddToCart} onClick={onAddToCart}>
