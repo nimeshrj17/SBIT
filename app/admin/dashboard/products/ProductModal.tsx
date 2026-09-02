@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Product, addProduct, updateProduct, getCategories, Category, getSetting } from "@/lib/productService";
+import { Product, addProduct, updateProduct, getCategories, Category, getSetting, uploadImageToStorage } from "@/lib/productService";
 import styles from "./ProductModal.module.css";
 import { X } from "lucide-react";
 
@@ -89,51 +89,30 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const img = new window.Image();
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            let width = img.width;
-            let height = img.height;
-            
-            // Max dimensions
-            const MAX_SIZE = 800;
-            if (width > height && width > MAX_SIZE) {
-              height *= MAX_SIZE / width;
-              width = MAX_SIZE;
-            } else if (height > MAX_SIZE) {
-              width *= MAX_SIZE / height;
-              height = MAX_SIZE;
-            }
-            
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx?.drawImage(img, 0, 0, width, height);
-            
-            // Compress to JPEG 70% quality to ensure it fits in Firestore 1MB limit
-            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
-            setFormData(prev => {
-              const currentImages = prev.images?.length ? prev.images : (prev.image ? [prev.image] : []);
-              const newImages = [...currentImages, compressedBase64];
-              return { 
-                ...prev, 
-                image: newImages[0],
-                images: newImages
-              };
-            });
-          };
-          img.src = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-      });
+      try {
+        setIsSubmitting(true);
+        for (const file of files) {
+          const downloadUrl = await uploadImageToStorage(file, 'products');
+          setFormData(prev => {
+            const currentImages = prev.images?.length ? prev.images : (prev.image ? [prev.image] : []);
+            const newImages = [...currentImages, downloadUrl];
+            return { 
+              ...prev, 
+              image: newImages[0],
+              images: newImages
+            };
+          });
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("Failed to upload image. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
-    // Clear input so same file can be uploaded again if needed
     e.target.value = '';
   };
 

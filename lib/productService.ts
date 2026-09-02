@@ -11,6 +11,22 @@ import {
   getDoc,
   setDoc
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
+
+export const uploadImageToStorage = async (file: File, path: string): Promise<string> => {
+  if (!hasRealDb() || !storage) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+  const storageRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
+  const snapshot = await uploadBytes(storageRef, file);
+  return await getDownloadURL(snapshot.ref);
+};
 
 // --- PRODUCT TYPES & SERVICES ---
 export interface Product {

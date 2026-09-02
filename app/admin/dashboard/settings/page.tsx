@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "../products/page.module.css";
 import { Settings, Save, Phone } from "lucide-react";
-import { getSetting, setSetting } from "@/lib/productService";
+import { getSetting, setSetting, uploadImageToStorage } from "@/lib/productService";
 
 export default function SettingsPage() {
   const [whatsapp, setWhatsapp] = useState("");
@@ -31,31 +31,14 @@ export default function SettingsPage() {
     ]
   });
 
-  const processImageFile = (file: File, callback: (base64: string) => void) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const img = new window.Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        let width = img.width;
-        let height = img.height;
-        const MAX_SIZE = 800;
-        if (width > height && width > MAX_SIZE) {
-          height *= MAX_SIZE / width;
-          width = MAX_SIZE;
-        } else if (height > MAX_SIZE) {
-          width *= MAX_SIZE / height;
-          height = MAX_SIZE;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, width, height);
-        callback(canvas.toDataURL("image/jpeg", 0.7));
-      };
-      img.src = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+  const processImageFile = async (file: File, callback: (url: string) => void) => {
+    try {
+      const url = await uploadImageToStorage(file, 'settings');
+      callback(url);
+    } catch (e) {
+      console.error("Error uploading image:", e);
+      alert("Failed to upload image.");
+    }
   };
 
   useEffect(() => {
