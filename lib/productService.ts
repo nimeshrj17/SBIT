@@ -15,7 +15,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
 
 export const uploadImageToStorage = async (file: File, path: string): Promise<string> => {
-  if (!hasRealDb() || !storage) {
+  if (!hasRealDb()) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
@@ -23,9 +23,23 @@ export const uploadImageToStorage = async (file: File, path: string): Promise<st
       reader.readAsDataURL(file);
     });
   }
-  const storageRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
-  const snapshot = await uploadBytes(storageRef, file);
-  return await getDownloadURL(snapshot.ref);
+  
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('path', path);
+  
+  const response = await fetch('/api/upload-image', {
+    method: 'POST',
+    body: formData,
+  });
+  
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to upload image');
+  }
+  
+  const data = await response.json();
+  return data.url;
 };
 
 // --- PRODUCT TYPES & SERVICES ---
