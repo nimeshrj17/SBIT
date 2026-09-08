@@ -106,9 +106,9 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
             };
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error uploading image:", error);
-        alert("Failed to upload image. Please try again.");
+        alert(`Failed to upload image: ${error.message}`);
       } finally {
         setIsSubmitting(false);
       }

@@ -24,8 +24,44 @@ export const uploadImageToStorage = async (file: File, path: string): Promise<st
     });
   }
   
+  // Compress image to max 1920px to preserve high quality but avoid 4.5MB Vercel limit
+  const compressedFile = await new Promise<File>((resolve, reject) => {
+    const img = new window.Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement("canvas");
+      let { width, height } = img;
+      const MAX_SIZE = 1920;
+      
+      if (width > height && width > MAX_SIZE) {
+        height *= MAX_SIZE / width;
+        width = MAX_SIZE;
+      } else if (height > MAX_SIZE) {
+        width *= MAX_SIZE / height;
+        height = MAX_SIZE;
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return resolve(file);
+      
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+        } else {
+          resolve(file);
+        }
+      }, 'image/jpeg', 0.9); // 90% quality is virtually indistinguishable from original
+    };
+    img.onerror = () => resolve(file);
+    img.src = url;
+  });
+  
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('file', compressedFile);
   formData.append('path', path);
   
   const response = await fetch('/api/upload-image', {
@@ -34,8 +70,14 @@ export const uploadImageToStorage = async (file: File, path: string): Promise<st
   });
   
   if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error || 'Failed to upload image');
+    let errorText = 'Unknown error';
+    try {
+      const err = await response.json();
+      errorText = err.error || err.message || JSON.stringify(err);
+    } catch (e) {
+      errorText = await response.text().catch(() => response.statusText);
+    }
+    throw new Error(`Upload failed (${response.status}): ${errorText}`);
   }
   
   const data = await response.json();
