@@ -9,7 +9,8 @@ import {
   query, 
   orderBy,
   getDoc,
-  setDoc
+  setDoc,
+  where
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
@@ -143,6 +144,30 @@ const withTimeout = <T>(promise: Promise<T>, ms: number = 5000): Promise<T> => {
     promise,
     new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Firebase connection timeout. Is the database created?")), ms))
   ]);
+};
+
+export const isProductCodeDuplicate = async (code: string, excludeId?: string): Promise<boolean> => {
+  if (!code) return false;
+  if (!hasRealDb()) {
+    return mockProducts.some(p => p.productCode === code && p.id !== excludeId);
+  }
+  try {
+    const q = query(collection(db, COLLECTION_NAME), where("productCode", "==", code));
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) return false;
+    
+    // If we're editing a product, we want to exclude its own ID from the duplicate check
+    if (excludeId) {
+      const otherProducts = querySnapshot.docs.filter(d => d.id !== excludeId);
+      return otherProducts.length > 0;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Error checking product code:", error);
+    return false; // Allow save if there's an error
+  }
 };
 
 export const getProducts = async (): Promise<Product[]> => {

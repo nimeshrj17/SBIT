@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Product, addProduct, updateProduct, getCategories, Category, getSetting, uploadImageToStorage } from "@/lib/productService";
+import { Product, addProduct, updateProduct, getCategories, Category, getSetting, uploadImageToStorage, isProductCodeDuplicate } from "@/lib/productService";
 import styles from "./ProductModal.module.css";
 import { X } from "lucide-react";
 
@@ -148,6 +148,15 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
     setIsSubmitting(true);
     
     try {
+      if (formData.productCode) {
+        const isDuplicate = await isProductCodeDuplicate(formData.productCode, productToEdit?.id);
+        if (isDuplicate) {
+          alert(`Product Code "${formData.productCode}" already exists. Please use a unique product code.`);
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      
       if (productToEdit && productToEdit.id) {
         await updateProduct(productToEdit.id, formData);
       } else {
