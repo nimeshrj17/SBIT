@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./ProductCard.module.css";
 import { Heart, ShoppingBag, MessageCircle, X } from "lucide-react";

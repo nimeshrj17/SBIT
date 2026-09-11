@@ -79,13 +79,39 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
           const newCategories = checked 
             ? [...(prev.categories || []), value]
             : (prev.categories || []).filter(c => c !== value);
-          return { ...prev, categories: newCategories };
+            
+          let newPrice = prev.price;
+          // Auto-set price based on range categories
+          if (checked) {
+            if (value === 'low-range') newPrice = 1;
+            else if (value === 'mid-range') newPrice = priceInterval + 1;
+            else if (value === 'high-range') newPrice = (priceInterval * 2) + 1;
+          }
+            
+          return { ...prev, categories: newCategories, price: newPrice };
         });
       } else {
-        setFormData(prev => ({ ...prev, [name]: checked }));
+        setFormData(prev => {
+          let updated = { ...prev, [name]: checked };
+          return updated;
+        });
       }
     } else {
-      setFormData(prev => ({ ...prev, [name]: name === "price" || name === "extraColorsCount" ? Number(value) : value }));
+      setFormData(prev => {
+        const val = name === "price" || name === "extraColorsCount" ? Number(value) : value;
+        const updated = { ...prev, [name]: val };
+        
+        // Auto-set category based on price range selection
+        if (name === 'price') {
+          let newCats = (prev.categories || []).filter(c => !['low-range', 'mid-range', 'high-range'].includes(c));
+          if (val === 1) newCats.push('low-range');
+          else if (val === priceInterval + 1) newCats.push('mid-range');
+          else if (val >= (priceInterval * 2) + 1) newCats.push('high-range');
+          updated.categories = newCats;
+        }
+        
+        return updated;
+      });
     }
   };
 
