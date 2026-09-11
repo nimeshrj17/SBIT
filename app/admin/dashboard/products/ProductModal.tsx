@@ -104,9 +104,10 @@ export default function ProductModal({ isOpen, onClose, productToEdit, onSaved }
         // Auto-set category based on price range selection
         if (name === 'price') {
           let newCats = (prev.categories || []).filter(c => !['low-range', 'mid-range', 'high-range'].includes(c));
-          if (val === 1) newCats.push('low-range');
-          else if (val === priceInterval + 1) newCats.push('mid-range');
-          else if (val >= (priceInterval * 2) + 1) newCats.push('high-range');
+          const numVal = Number(val);
+          if (numVal === 1) newCats.push('low-range');
+          else if (numVal === priceInterval + 1) newCats.push('mid-range');
+          else if (numVal >= (priceInterval * 2) + 1) newCats.push('high-range');
           updated.categories = newCats;
         }
         
