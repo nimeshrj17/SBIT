@@ -31,9 +31,7 @@
 
 .imageSlider {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  touch-action: pan-x pan-y;
+  overflow: hidden;
   scrollbar-width: none;
   width: 100%;
   height: 100%;
