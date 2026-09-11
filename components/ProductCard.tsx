@@ -45,6 +45,26 @@ export default function ProductCard({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const isHovered = useRef(false);
+
+  useEffect(() => {
+    if (allImages.length <= 1) return;
+    const interval = setInterval(() => {
+      if (!isHovered.current && sliderRef.current) {
+        const width = sliderRef.current.clientWidth;
+        let nextIndex = activeImageIndex + 1;
+        if (nextIndex >= allImages.length) {
+          nextIndex = 0;
+        }
+        sliderRef.current.scrollTo({
+          left: nextIndex * width,
+          behavior: "smooth"
+        });
+        setActiveImageIndex(nextIndex);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [allImages.length, activeImageIndex]);
 
   const handleScroll = () => {
     if (sliderRef.current) {
@@ -57,7 +77,11 @@ export default function ProductCard({
 
   return (
     <>
-      <div className={styles.card}>
+      <div 
+        className={styles.card}
+        onMouseEnter={() => isHovered.current = true}
+        onMouseLeave={() => isHovered.current = false}
+      >
         <div className={styles.imageContainer}>
           <div 
             className={styles.imageSlider} 

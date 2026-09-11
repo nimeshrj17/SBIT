@@ -8,7 +8,7 @@
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(0);
 }
 
 .imageContainer {
@@ -23,14 +23,17 @@
   transition: transform 0.5s;
 }
 
-.card:hover .image {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .card:hover .image {
+    transform: scale(1.05);
+  }
 }
 
 .imageSlider {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  touch-action: pan-x pan-y;
   scrollbar-width: none;
   width: 100%;
   height: 100%;
