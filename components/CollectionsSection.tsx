@@ -32,6 +32,44 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
   const [availableFabrics, setAvailableFabrics] = useState<string[]>([]);
   const [whatsappNumber, setWhatsappNumber] = useState<string>("");
   
+  const handleCategoryChange = (slug: string) => {
+    setSelectedCategory(slug);
+    if (slug === 'low-range' && priceBuckets.length > 1) {
+      setSelectedPrice(priceBuckets[1]);
+    } else if (slug === 'mid-range' && priceBuckets.length > 2) {
+      setSelectedPrice(priceBuckets[2]);
+    } else if (slug === 'high-range' && priceBuckets.length > 3) {
+      // Find the bucket that starts with the High Range threshold (e.g. ₹8,000)
+      const highRangeThreshold = priceFilterInterval * 2;
+      const targetBucket = priceBuckets.find(b => {
+        if (b === "All Prices") return false;
+        const parts = b.split(" - ");
+        const min = parseInt(parts[0].replace(/\D/g, ''), 10);
+        return min >= highRangeThreshold; // Select the first high range bucket, or we could change the filter logic.
+      });
+      if (targetBucket) setSelectedPrice(targetBucket);
+    } else if (slug === 'all') {
+      setSelectedPrice("All Prices");
+    }
+  };
+
+  const handlePriceChange = (bucket: string) => {
+    setSelectedPrice(bucket);
+    if (bucket === "All Prices") {
+      setSelectedCategory('all');
+      return;
+    }
+    const parts = bucket.split(" - ");
+    const min = parseInt(parts[0].replace(/\D/g, ''), 10);
+    if (min === 0) {
+      setSelectedCategory('low-range');
+    } else if (min === priceFilterInterval) {
+      setSelectedCategory('mid-range');
+    } else if (min >= priceFilterInterval * 2) {
+      setSelectedCategory('high-range');
+    }
+  };
+  
   const filteredProducts = products.filter(p => {
     if (selectedCategory !== "all" && !(p.categories || []).includes(selectedCategory)) return false;
     if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -167,7 +205,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
               <div key={cat.id} style={{ display: 'flex', alignItems: 'center' }}>
                 <button 
                   className={`${styles.navItem} ${selectedCategory === cat.slug ? styles.active : ''}`}
-                  onClick={() => setSelectedCategory(cat.slug)}
+                  onClick={() => handleCategoryChange(cat.slug)}
                 >
                   <span className={styles.navIcon}>&#10086;</span>
                   {cat.name}
@@ -205,7 +243,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                             name="category" 
                             checked={selectedCategory === cat.slug}
                             onChange={() => {
-                              setSelectedCategory(cat.slug);
+                              handleCategoryChange(cat.slug);
                               setOpenDropdown(null);
                             }}
                           />
@@ -237,7 +275,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                               name="price" 
                               checked={selectedPrice === bucket} 
                               onChange={() => {
-                                setSelectedPrice(bucket);
+                                handlePriceChange(bucket);
                                 setOpenDropdown(null);
                               }} 
                             />
