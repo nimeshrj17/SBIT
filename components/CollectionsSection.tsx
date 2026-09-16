@@ -400,6 +400,9 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {selectedCategory !== 'all' && (
                   <> in <span style={{ color: '#c9a15a', fontWeight: 600 }}>{categories.find(c => c.slug === selectedCategory)?.name}</span></>
                 )}
+                {selectedPrice !== "All Prices" && (
+                  <> <span style={{ color: '#c9a15a', fontWeight: 600 }}>({selectedPrice})</span></>
+                )}
               </span>
               
               <div className={styles.topBarControls}>
