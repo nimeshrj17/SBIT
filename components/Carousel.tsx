@@ -8,14 +8,16 @@ interface CarouselItem {
   image: string;
   label: string;
   alt: string;
+  slug?: string | null;
 }
 
 interface CarouselProps {
   items: CarouselItem[];
   autoPlayInterval?: number;
+  onItemClick?: (item: CarouselItem) => void;
 }
 
-export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselProps) {
+export default function Carousel({ items, autoPlayInterval = 3000, onItemClick }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const touchStartX = useRef(0);
@@ -81,6 +83,7 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
             transform: `translateX(${offset * 65}%) scale(${1 - Math.abs(offset) * 0.15})`,
             opacity: Math.abs(offset) >= 3 ? 0 : 1,
             pointerEvents: offset === 0 ? 'auto' : 'none',
+            cursor: offset === 0 ? 'pointer' : 'default'
           };
 
           return (
@@ -89,7 +92,11 @@ export default function Carousel({ items, autoPlayInterval = 3000 }: CarouselPro
               className={className}
               style={inlineStyle}
               onClick={() => {
-                if (offset !== 0) setCurrentIndex(idx);
+                if (offset !== 0) {
+                  setCurrentIndex(idx);
+                } else if (onItemClick) {
+                  onItemClick(item);
+                }
               }}
             >
               <Image 

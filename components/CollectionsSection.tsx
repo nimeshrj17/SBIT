@@ -181,15 +181,24 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 ...categories.filter(c => c.slug !== "all").map(c => ({
                   image: c.image || "https://picsum.photos/800/800",
                   label: c.name,
-                  alt: c.name
+                  alt: c.name,
+                  slug: c.slug
                 })),
                 ...products.filter(p => p.isPopular || p.isBestSeller).map(p => ({
                   image: p.image,
                   label: `${p.title} ${p.isBestSeller ? '(Best Seller)' : '(Popular)'}`,
-                  alt: p.title
+                  alt: p.title,
+                  slug: null
                 }))
               ]}
               autoPlayInterval={4000}
+              onItemClick={(item) => {
+                if (item.slug) {
+                  handleCategoryChange(item.slug);
+                  // Scroll to products area
+                  document.getElementById('products-grid')?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             />
           )}
         </div>
@@ -385,8 +394,13 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
           <div className={styles.productsArea}>
             
             {/* Top Bar */}
-            <div className={styles.productsTopBar}>
-              <span className={styles.showingText}>Showing {filteredProducts.length} of {products.length} products</span>
+            <div id="products-grid" className={styles.productsTopBar}>
+              <span className={styles.showingText}>
+                Showing {filteredProducts.length} of {products.length} products
+                {selectedCategory !== 'all' && (
+                  <> in <span style={{ color: '#c9a15a', fontWeight: 600 }}>{categories.find(c => c.slug === selectedCategory)?.name}</span></>
+                )}
+              </span>
               
               <div className={styles.topBarControls}>
                 <div className={styles.searchBox}>
