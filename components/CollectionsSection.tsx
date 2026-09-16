@@ -39,16 +39,15 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
     } else if (slug === 'mid-range' && priceBuckets.length > 2) {
       setSelectedPrice(priceBuckets[2]);
     } else if (slug === 'high-range' && priceBuckets.length > 3) {
-      // Find the bucket that starts with the High Range threshold (e.g. ₹8,000)
       const highRangeThreshold = priceFilterInterval * 2;
       const targetBucket = priceBuckets.find(b => {
         if (b === "All Prices") return false;
         const parts = b.split(" - ");
         const min = parseInt(parts[0].replace(/\D/g, ''), 10);
-        return min >= highRangeThreshold; // Select the first high range bucket, or we could change the filter logic.
+        return min >= highRangeThreshold;
       });
       if (targetBucket) setSelectedPrice(targetBucket);
-    } else if (slug === 'all') {
+    } else {
       setSelectedPrice("All Prices");
     }
   };
@@ -229,7 +228,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {/* Categories Dropdown */}
                 <div className={styles.filterDropdownContainer}>
                   <button 
-                    className={styles.dropdownTrigger}
+                    className={`${styles.dropdownTrigger} ${selectedCategory !== 'all' ? styles.activeFilter : ''}`}
                     onClick={() => setOpenDropdown(openDropdown === 'category' ? null : 'category')}
                   >
                     Category: {categories.find(c => c.slug === selectedCategory)?.name || "All"} <ChevronDown size={14} />
@@ -261,7 +260,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {enablePriceRange && (
                   <div className={styles.filterDropdownContainer}>
                     <button 
-                      className={styles.dropdownTrigger}
+                      className={`${styles.dropdownTrigger} ${selectedPrice !== "All Prices" ? styles.activeFilter : ''}`}
                       onClick={() => setOpenDropdown(openDropdown === 'price' ? null : 'price')}
                     >
                       Price: {selectedPrice} <ChevronDown size={14} />
@@ -290,7 +289,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {/* Color Dropdown */}
                 <div className={styles.filterDropdownContainer}>
                   <button 
-                    className={styles.dropdownTrigger}
+                    className={`${styles.dropdownTrigger} ${selectedColor ? styles.activeFilter : ''}`}
                     onClick={() => setOpenDropdown(openDropdown === 'color' ? null : 'color')}
                   >
                     Color: {selectedColor || "Any"} <ChevronDown size={14} />
@@ -321,7 +320,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                                 transition: 'all 0.2s ease'
                               }}
                             >
-                              {hex !== 'transparent' && <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: hex }}></span>}
+                              
                               {name}
                             </span>
                           );
@@ -335,7 +334,7 @@ export default function CollectionsSection({ onAddToCart }: CollectionsSectionPr
                 {/* Fabric Dropdown */}
                 <div className={styles.filterDropdownContainer}>
                   <button 
-                    className={styles.dropdownTrigger}
+                    className={`${styles.dropdownTrigger} ${selectedFabric ? styles.activeFilter : ''}`}
                     onClick={() => setOpenDropdown(openDropdown === 'fabric' ? null : 'fabric')}
                   >
                     Fabric: {selectedFabric || "Any"} <ChevronDown size={14} />

@@ -59,7 +59,7 @@ export default function Footer({
         <div className={styles.footerInfoSection}>
           <div className={styles.brandInfo}>
             <div className={styles.logo}>
-              <div className={styles.logoCircle}></div>
+              <img src="/logo.jpg" alt="House of Shri Logo" className={styles.logoCircle} style={{ objectFit: 'cover' }} />
               <div className={styles.logoText}>
                 <span className={styles.logoHouse}>&mdash; HOUSE OF &mdash;</span>
                 <span className={styles.logoShri}>SHRI</span>

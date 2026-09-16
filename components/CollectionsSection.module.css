@@ -491,3 +491,9 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.activeFilter {
+  color: #c9a15a !important;
+  border-color: #c9a15a !important;
+}
+

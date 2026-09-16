@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Globe, Scissors, ShieldCheck, Factory } from "lucide-react";
 import Silk from "./Silk";
 import { useState, useEffect } from "react";
+import { getSetting } from "@/lib/productService";
 
 const HERO_CATEGORIES = [
   { id: "c1", name: "Bridal Lehengas", image: "/collections/bridal.jpg" },
@@ -17,8 +18,13 @@ const HERO_CATEGORIES = [
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [heroImage, setHeroImage] = useState<string | null>(null);
 
   useEffect(() => {
+    getSetting("heroImage").then(img => {
+      if (img) setHeroImage(img);
+    });
+    
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_CATEGORIES.length);
     }, 4000);
@@ -61,20 +67,32 @@ export default function Hero() {
         
         <div className={styles.rightColumn}>
           <div className={styles.heroCarouselFrame}>
-            {HERO_CATEGORIES.map((cat, idx) => (
-              <div 
-                key={cat.id} 
-                className={`${styles.heroCarouselSlide} ${idx === currentSlide ? styles.activeSlide : ''}`}
-              >
+            {heroImage ? (
+              <div className={`${styles.heroCarouselSlide} ${styles.activeSlide}`}>
                 <Image 
-                  src={cat.image} 
-                  alt={cat.name} 
+                  src={heroImage} 
+                  alt="Hero Banner" 
                   fill 
                   className={styles.heroCarouselImage}
-                  priority={idx === 0}
+                  priority
                 />
               </div>
-            ))}
+            ) : (
+              HERO_CATEGORIES.map((cat, idx) => (
+                <div 
+                  key={cat.id} 
+                  className={`${styles.heroCarouselSlide} ${idx === currentSlide ? styles.activeSlide : ''}`}
+                >
+                  <Image 
+                    src={cat.image} 
+                    alt={cat.name} 
+                    fill 
+                    className={styles.heroCarouselImage}
+                    priority={idx === 0}
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ export default function SettingsPage() {
   const [availableColors, setAvailableColors] = useState("Peach, Multi Colour, Off White, Maroon, Wine, Baby Pink, Yellow, Orange, Gold, Grey, Black, Rani");
   const [availableFabrics, setAvailableFabrics] = useState("Silk, Georgette, Velvet, Net, Crepe, Organza");
   const [backgroundColor, setBackgroundColor] = useState("#1a0a0d");
+  const [heroImage, setHeroImage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   
@@ -59,6 +60,8 @@ export default function SettingsPage() {
       if (fabrics) setAvailableFabrics(fabrics);
       const bgColor = await getSetting("backgroundColor");
       if (bgColor) setBackgroundColor(bgColor);
+      const hImage = await getSetting("heroImage");
+      if (hImage) setHeroImage(hImage);
       const about = await getSetting("aboutUsData");
       if (about) {
         try { setAboutUsData(JSON.parse(about)); } catch(e) {}
@@ -81,6 +84,7 @@ export default function SettingsPage() {
       await setSetting("availableColors", availableColors);
       await setSetting("availableFabrics", availableFabrics);
       await setSetting("backgroundColor", backgroundColor);
+      await setSetting("heroImage", heroImage);
       await setSetting("aboutUsData", JSON.stringify(aboutUsData));
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
@@ -269,6 +273,26 @@ export default function SettingsPage() {
               />
             </div>
           </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>
+              Hero Section Banner Image
+            </label>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  processImageFile(e.target.files[0], setHeroImage);
+                }
+              }}
+              style={{ color: '#fff' }}
+            />
+            {heroImage && (
+              <img src={heroImage} alt="Hero Preview" style={{ width: '100%', maxWidth: '400px', borderRadius: '4px', marginTop: '0.5rem' }} />
+            )}
+          </div>
+
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ color: 'rgba(245, 239, 230, 0.8)', fontSize: '0.9rem' }}>

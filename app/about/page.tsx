@@ -98,10 +98,6 @@ export default function AboutUsPage() {
           ) : (
             <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(255,255,255,0.1)' }}></div>
           )}
-          <div className={styles.playButtonOverlay}>
-            <div className={styles.playIcon}>
-              <Play size={24} fill="currentColor" style={{ marginLeft: '4px' }} />
-            </div>
             <span className={styles.playText}>Watch Our Story</span>
           </div>
         </div>
@@ -127,9 +123,6 @@ export default function AboutUsPage() {
                 ) : (
                   <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(255,255,255,0.05)' }}></div>
                 )}
-                <div className={styles.cardPlayIcon}>
-                  <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }} />
-                </div>
               </div>
               <div>
                 <h3 className={styles.cardTitle}>{card.title}</h3>
